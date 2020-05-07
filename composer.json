@@ -1,0 +1,25 @@
+{
+    "name": "benjamin/mon-framework",
+    "authors": [
+        {
+            "name": "benjamin",
+            "email": "b.nsingi07@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework",
+            "App\\": "src",
+            "Tests\\": "tests"
+        }
+    },
+    "require": {
+        "guzzlehttp/psr7": "^1.4",
+        "http-interop/response-sender": "^1.0",
+        "zendframework/zend-expressive-fastroute": "^2.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.0",
+        "phpunit/phpunit": "^6.2"
+    }
+}
