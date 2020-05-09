@@ -19,7 +19,7 @@ class PHPRenderer implements RendererInterface
 
     public function __construct(?string $defaultPath = null)
     {
-        if (!is_null($defaultPath)){
+        if (!is_null($defaultPath)) {
             $this->addPath($defaultPath);
         }
     }
@@ -29,13 +29,14 @@ class PHPRenderer implements RendererInterface
      * @param string $namespace
      * @param string|null $path
      */
-    public function addPath(string $namespace, ?string $path = null): void {
+    public function addPath(string $namespace, ?string $path = null): void
+    {
         //On definit un chemin
-      if (is_null($path)){
-          $this->paths[self::DEFAULT_NAMESPACE] = $namespace;
-      }else{
-          $this->paths[$namespace] = $path;
-      }
+        if (is_null($path)) {
+            $this->paths[self::DEFAULT_NAMESPACE] = $namespace;
+        } else {
+            $this->paths[$namespace] = $path;
+        }
     }
 
     /**
@@ -47,12 +48,13 @@ class PHPRenderer implements RendererInterface
      * @param array $params
      * @return string
      */
-    public function render(string $view, array $params = []): string{
+    public function render(string $view, array $params = []): string
+    {
         //On verifie si on a un namespace dans le chemin de la vue
-        if($this->hasNamespace($view)){
+        if ($this->hasNamespace($view)) {
             //on passe la vue
-           $path = $this->replaceNamespace($view) . '.php';
-        }else{
+            $path = $this->replaceNamespace($view) . '.php';
+        } else {
             //On retourne une vue
             $path = $this->paths[self::DEFAULT_NAMESPACE]. DIRECTORY_SEPARATOR . $view . '.php';
         }
@@ -71,22 +73,26 @@ class PHPRenderer implements RendererInterface
      * @param string $key
      * @param mixed $value
      */
-    public function addGlobal(string $key, $value): void {
+    public function addGlobal(string $key, $value): void
+    {
         $this->globals[$key] = $value;
     }
 
-    private function hasNamespace(string $view):bool {
-        if($view[0] === '@'){
+    private function hasNamespace(string $view):bool
+    {
+        if ($view[0] === '@') {
             return true;
         }
         return false;
     }
 
-    private function getNamespace(string $view): string {
-      return substr($view, 1, strpos($view, '/') -1);
+    private function getNamespace(string $view): string
+    {
+        return substr($view, 1, strpos($view, '/') -1);
     }
 
-    private function replaceNamespace(string $view): string {
+    private function replaceNamespace(string $view): string
+    {
         $namespace = $this->getNamespace($view);
         return str_replace('@' . $namespace, $this->paths[$namespace], $view);
     }

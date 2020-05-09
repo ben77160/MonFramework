@@ -3,6 +3,10 @@ use Framework\Renderer\RendererInterface;
 use Framework\Renderer\TwigRendererFactory;
 
 return [
+    'database.host' => 'localhost',
+    'database.username' => 'root',
+    'database.password' => '',
+    'database.name' => 'monsupersite',
     'views.path' => dirname(__DIR__) . '/views',
     'twig.extensions' => [
         \DI\get(\Framework\Router\RouterTwigExtension::class)

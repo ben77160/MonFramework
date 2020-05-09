@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Blog\Actions;
+
 use Framework\Renderer\RendererInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -16,17 +17,17 @@ class BlogAction
      */
     public function __construct(RendererInterface $renderer)
     {
-       $this->renderer = $renderer;
+        $this->renderer = $renderer;
     }
 
     public function __invoke(Request $request)
     {
         $slug = $request->getAttribute('slug');
-       if($slug){
-           return $this->show($slug);
-       }else{
-          return $this->index();
-       }
+        if ($slug) {
+            return $this->show($slug);
+        } else {
+            return $this->index();
+        }
     }
 
     public function index(): string
@@ -36,7 +37,7 @@ class BlogAction
 
     public function show(string $slug): string
     {
-        return $this->renderer->render('@blog/show',[
+        return $this->renderer->render('@blog/show', [
             'slug' => $slug
         ]);
     }

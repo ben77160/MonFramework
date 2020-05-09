@@ -7,12 +7,12 @@ class TwigRenderer implements RendererInterface
     private $twig;
     private $loader;
 
-   public function __construct(\Twig_Loader_Filesystem $loader, \Twig_Environment $twig)
-   {
-       //on initialise
-       $this->loader = $loader;
-       $this->twig = $twig;
-   }
+    public function __construct(\Twig_Loader_Filesystem $loader, \Twig_Environment $twig)
+    {
+        //on initialise
+        $this->loader = $loader;
+        $this->twig = $twig;
+    }
 
     /**
      * Permet de rajouter un chemin pour charger les vues
@@ -31,7 +31,7 @@ class TwigRenderer implements RendererInterface
      */
     public function render(string $view, array $params = []): string
     {
-      return $this->twig->render($view . '.twig', $params);
+        return $this->twig->render($view . '.twig', $params);
     }
 
     /**

@@ -58,7 +58,7 @@ class App
             return $request->withAttribute($key, $params[$key]);
         }, $request);
         $callback = $route->getCallback();
-        if(is_string($callback)){
+        if (is_string($callback)) {
             $callback = $this->container->get($callback);
         }
         $response = call_user_func_array($callback, [$request]);
@@ -69,5 +69,13 @@ class App
         } else {
             throw new \Exception('The response is not a string or an instance of ResponseInterface');
         }
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
     }
 }
