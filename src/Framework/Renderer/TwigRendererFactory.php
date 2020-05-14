@@ -1,10 +1,7 @@
 <?php
-
-
 namespace Framework\Renderer;
 
-use Framework\Router\RouterTwigExtension;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class TwigRendererFactory
 {
@@ -18,6 +15,6 @@ class TwigRendererFactory
                 $twig->addExtension($extension);
             }
         }
-        return new TwigRenderer($loader, $twig);
+        return new TwigRenderer($twig);
     }
 }
