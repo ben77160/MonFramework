@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests;
 
 use PDO;
@@ -10,12 +11,12 @@ use Symfony\Component\Console\Output\NullOutput;
 
 class DatabaseTestCase extends TestCase
 {
+
     /**
      * @var PDO
      */
     protected $pdo;
 
-    protected $seeds = true;
     /**
      * @var Manager
      */
@@ -23,12 +24,12 @@ class DatabaseTestCase extends TestCase
 
     public function setUp()
     {
-        $pdo = new PDO('sqlite::memory', null, null, [
+        $pdo = new PDO('sqlite::memory:', null, null, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
         $configArray = require('phinx.php');
         $configArray['environments']['test'] = [
-            'adapter' => 'sqlite',
+            'adapter'    => 'sqlite',
             'connection' => $pdo
         ];
         $config = new Config($configArray);
@@ -45,4 +46,5 @@ class DatabaseTestCase extends TestCase
         $this->manager->seed('test');
         $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     }
+
 }

@@ -5,6 +5,10 @@ use App\Framework\Twig\TextExtension;
 use App\Framework\Twig\TimeExtension;
 use Framework\Renderer\RendererInterface;
 use Framework\Renderer\TwigRendererFactory;
+use Framework\Router;
+use Psr\Container\ContainerInterface;
+use function DI\factory;
+use function DI\object;
 
 return [
     'database.host' => 'localhost',
@@ -14,11 +18,13 @@ return [
     'views.path' => dirname(__DIR__) . '/views',
     'twig.extensions' => [
         \DI\get(\Framework\Router\RouterTwigExtension::class),
-\DI\get(PagerFantaExtension::class), \DI\get(TextExtension::class), \DI\get(TimeExtension::class)
+        \DI\get(PagerFantaExtension::class),
+        \DI\get(TextExtension::class),
+        \DI\get(TimeExtension::class)
     ],
-    \Framework\Router::class => \DI\object(),
-    RendererInterface::class => \DI\factory(TwigRendererFactory::class),
-    \PDO::class => function (\Psr\Container\ContainerInterface $c) {
+    Router::class => object(),
+    RendererInterface::class => factory(TwigRendererFactory::class),
+    \PDO::class => function (ContainerInterface $c) {
         return new PDO(
             'mysql:host=' .$c->get('database.host') . ';dbname=' . $c->get('database.name'),
             $c->get('database.username'),

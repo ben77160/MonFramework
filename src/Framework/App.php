@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use DI\Container;
 use GuzzleHttp\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -30,6 +29,7 @@ class App
 
     /**
      * App constructor.
+     * @param ContainerInterface $container
      * @param string[] $modules Liste des modules à charger
      */
     public function __construct(ContainerInterface $container, array $modules = [])
@@ -43,6 +43,10 @@ class App
     public function run(ServerRequestInterface $request): ResponseInterface
     {
         $uri = $request->getUri()->getPath();
+        $parseBody = $request->getParsedBody();
+        if (array_key_exists('_method', $parseBody) && in_array($parseBody['_method'],['DELETE', 'PUT'])){
+             $request = $request->withMethod($parseBody['_method']);
+        }
         if (!empty($uri) && $uri[-1] === "/") {
             return (new Response())
                 ->withStatus(301)

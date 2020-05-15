@@ -39,4 +39,9 @@ class TwigRenderer implements RendererInterface
     {
         $this->twig->addGlobal($key, $value);
     }
+
+    public function get(string $class)
+    {
+        // TODO: Implement get() method.
+    }
 }

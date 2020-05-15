@@ -29,4 +29,6 @@ interface RendererInterface
      * @param mixed $value
      */
     public function addGlobal(string $key, $value): void;
+
+    public function get(string $class);
 }
