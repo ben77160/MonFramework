@@ -26,9 +26,17 @@
 
 <main>
     <div class="container" style="padding-top: 100px;">
-        {% block body %}
-
-        {% endblock %}
+        {% if flash('success') %}
+            <div class="alert alert-success">
+                {{ flash('success') }}
+            </div>
+        {% endif %}
+        {% if flash('error') %}
+            <div class="alert alert-danger">
+                {{ flash('error') }}
+            </div>
+        {% endif %}
+        {% block body %}{% endblock %}
     </div>
 </main><!-- /.container -->
 

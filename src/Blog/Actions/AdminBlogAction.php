@@ -5,6 +5,8 @@ namespace App\Blog\Actions;
 
 use App\Blog\Table\PostTable;
 use App\Framework\Actions\RouterAwareAction;
+use App\Framework\Session\FlashService;
+use App\Framework\Session\SessionInterface;
 use Framework\Renderer\RendererInterface;
 use Framework\Router;
 use Psr\Http\Message\ResponseInterface;
@@ -27,13 +29,18 @@ class AdminBlogAction
      */
     private $postTable;
 
+    /**
+     * @var $flash
+     */
+    private $flash;
     use RouterAwareAction;
 
-    public function __construct(RendererInterface $renderer, Router $router, PostTable $postTable)
+    public function __construct(RendererInterface $renderer, Router $router, PostTable $postTable, FlashService $flash)
     {
         $this->renderer = $renderer;
         $this->router = $router;
         $this->postTable = $postTable;
+        $this->flash = $flash;
     }
 
     public function __invoke(Request $request)
@@ -72,6 +79,7 @@ class AdminBlogAction
             $params = $this->getParams($request);
             $params['updated_at'] = date('Y-m-d H:i:s');
             $this->postTable->update($item->id, $params);
+            $this->flash->success('L\'article a bien été modifié');
             return $this->redirect('blog.admin.index');
         }
 
@@ -95,6 +103,7 @@ class AdminBlogAction
                'created_at' => date('Y-m-d H:i:s')
             ]);
             $this->postTable->insert($params);
+            $this->flash->success('L\'article a bien été modifié');
             return $this->redirect('blog.admin.index');
         }
         //On retourne la vue(render) puis on passe sur notre enregistrement sur le paramêtre compact
