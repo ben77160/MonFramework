@@ -1,7 +1,7 @@
 <?php
 namespace App\Blog\Entity;
 
-class Post
+class PostEntity
 {
     public $id;
 

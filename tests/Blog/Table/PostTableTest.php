@@ -2,7 +2,7 @@
 
 namespace Tests\App\Blog\Table;
 
-use App\Blog\Entity\Post;
+use App\Blog\Entity\PostEntity;
 use App\Blog\Table\PostTable;
 use Tests\DatabaseTestCase;
 
@@ -24,7 +24,7 @@ class PostTableTest extends DatabaseTestCase
     {
         $this->seedDatabase();
         $post = $this->postTable->find(1);
-        $this->assertInstanceOf(Post::class, $post);
+        $this->assertInstanceOf(PostEntity::class, $post);
     }
 
     public function testFindNotFoundRecord()
