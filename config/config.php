@@ -3,6 +3,7 @@
 use App\Framework\Session\PHPSession;
 use App\Framework\Session\SessionInterface;
 use App\Framework\Twig\FlashExtension;
+use App\Framework\Twig\FormExtension;
 use App\Framework\Twig\PagerFantaExtension;
 use App\Framework\Twig\TextExtension;
 use App\Framework\Twig\TimeExtension;
@@ -24,7 +25,8 @@ return [
         \DI\get(PagerFantaExtension::class),
         \DI\get(TextExtension::class),
         \DI\get(TimeExtension::class),
-        \DI\get(FlashExtension::class)
+        \DI\get(FlashExtension::class),
+        \DI\get(FormExtension::class)
     ],
     SessionInterface::class => \DI\object(PHPSession::class),
     Router::class => object(),
