@@ -38,7 +38,7 @@ class FormExtension extends \Twig_Extension
 
         if ($error) {
             $class .= ' has-danger';
-            $attributes['class'] .= ' form-control-danger';
+            $attributes['class'] .= ' form-control-danger is-invalid';
         }
         if ($type === 'textarea') {
             $input = $this->textarea($value, $attributes);
@@ -70,7 +70,7 @@ class FormExtension extends \Twig_Extension
     {
         $error = $context['errors'][$key] ?? false;
         if ($error) {
-            return "<small class=\"form-text text-muted\">{$error}</small>";
+            return "<small class=\"form-text text-danger\">{$error}</small>";
         }
         return "";
     }

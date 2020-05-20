@@ -2,7 +2,7 @@
 
 namespace Framework;
 
-use App\Blog\Actions\AdminBlogAction;
+use App\Blog\Actions\PostCrudAction;
 use Framework\Router\Route;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\FastRouteRouter;

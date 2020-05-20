@@ -4,7 +4,7 @@ namespace App\Framework\Twig;
 class TimeExtension extends \Twig_Extension
 {
     /**
-     * @return \Twig_SimpleFilter
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters(): array
     {
@@ -15,6 +15,8 @@ class TimeExtension extends \Twig_Extension
 
     public function ago(\DateTime $date, string $format = 'd/m/Y H:i')
     {
-        return '<span class="timeago" datetime="'. $date->format(\DateTime::ISO8601) . '">'. $date->format($format) . '</span>';
+        return '<span class="timeago" datetime="'.
+            $date->format(\DateTime::ISO8601) . '">'
+            . $date->format($format) . '</span>';
     }
 }
