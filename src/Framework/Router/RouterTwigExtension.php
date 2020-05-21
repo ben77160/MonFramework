@@ -1,4 +1,5 @@
 <?php
+
 namespace Framework\Router;
 
 use Framework\Router;
@@ -7,8 +8,7 @@ class RouterTwigExtension extends \Twig_Extension
 {
 
     /**
-     * RouterTwigExtension constructor.
-     * @param Router
+     * @var Router
      */
     private $router;
 
@@ -24,8 +24,8 @@ class RouterTwigExtension extends \Twig_Extension
         ];
     }
 
-    public function PathFor(string $path, array $params = []): string
+    public function pathFor(string $path, array $params = []): string
     {
-          return $this->router->generateUri($path, $params);
+        return $this->router->generateUri($path, $params);
     }
 }

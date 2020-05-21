@@ -1,1 +1,1 @@
-Salut!! <?= $nom ?>
+Salut <?= $nom ?>

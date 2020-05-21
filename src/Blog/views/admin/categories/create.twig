@@ -1,10 +1,10 @@
 {% extends '@admin/layout.twig' %}
 
-{% block title "Editer l'article" %}
+{% block title "Ajouter une catégorie" %}
 
 {% block body %}
 
-  <h1>Ajouter un article</h1>
+  <h1>Ajouter une catégorie</h1>
 
   <form action="{{ path(routePrefix ~ '.create') }}" method="post">
     {% include viewPath ~ '/form.twig' %}

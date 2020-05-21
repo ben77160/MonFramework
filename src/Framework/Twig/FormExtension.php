@@ -1,10 +1,10 @@
 <?php
-namespace App\Framework\Twig;
 
-use function DI\value;
+namespace Framework\Twig;
 
 class FormExtension extends \Twig_Extension
 {
+
     public function getFunctions(): array
     {
         return [
@@ -38,10 +38,12 @@ class FormExtension extends \Twig_Extension
 
         if ($error) {
             $class .= ' has-danger';
-            $attributes['class'] .= ' form-control-danger is-invalid';
+            $attributes['class'] .= ' form-control-danger';
         }
         if ($type === 'textarea') {
             $input = $this->textarea($value, $attributes);
+        } elseif (array_key_exists('options', $options)) {
+            $input = $this->select($value, $options['options'], $attributes);
         } else {
             $input = $this->input($value, $attributes);
         }
@@ -70,7 +72,7 @@ class FormExtension extends \Twig_Extension
     {
         $error = $context['errors'][$key] ?? false;
         if ($error) {
-            return "<small class=\"form-text text-danger\">{$error}</small>";
+            return "<small class=\"form-text text-muted\">{$error}</small>";
         }
         return "";
     }
@@ -98,14 +100,36 @@ class FormExtension extends \Twig_Extension
     }
 
     /**
+     * Génère un <select>
+     * @param null|string $value
+     * @param array $options
+     * @param array $attributes
+     * @return string
+     */
+    private function select(?string $value, array $options, array $attributes)
+    {
+        $htmlOptions = array_reduce(array_keys($options), function (string $html, string $key) use ($options, $value) {
+            $params = ['value' => $key, 'selected' => $key === $value];
+            return $html . '<option ' . $this->getHtmlFromArray($params) . '>' . $options[$key] . '</option>';
+        }, "");
+        return "<select " . $this->getHtmlFromArray($attributes) . ">$htmlOptions</select>";
+    }
+
+    /**
      * Transforme un tableau $clef => $valeur en attribut HTML
      * @param array $attributes
      * @return string
      */
     private function getHtmlFromArray(array $attributes)
     {
-        return implode(' ', array_map(function ($key, $value) {
-            return "$key=\"$value\"";
-        }, array_keys($attributes), $attributes));
+        $htmlParts = [];
+        foreach ($attributes as $key => $value) {
+            if ($value === true) {
+                $htmlParts[] = (string) $key;
+            } elseif ($value !== false) {
+                $htmlParts[] = "$key=\"$value\"";
+            }
+        }
+        return implode(' ', $htmlParts);
     }
 }

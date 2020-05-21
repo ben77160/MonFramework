@@ -1,23 +1,19 @@
 <?php
-
 namespace App\Blog\Actions;
 
 use App\Blog\Table\PostTable;
-use App\Framework\Actions\RouterAwareAction;
+use Framework\Actions\RouterAwareAction;
 use Framework\Renderer\RendererInterface;
 use Framework\Router;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use GuzzleHttp\Psr7\Response;
 
-/**
- * Class BlogAction
- * @package App\Blog\Actions
- */
 class BlogAction
 {
+
     /**
-     * @var RendererInterface $renderer
+     * @var RendererInterface
      */
     private $renderer;
 
@@ -44,17 +40,16 @@ class BlogAction
         if ($request->getAttribute('id')) {
             return $this->show($request);
         }
-            return $this->index($request);
+        return $this->index($request);
     }
 
     public function index(Request $request): string
     {
         $params = $request->getQueryParams();
-         $posts= $this->postTable->findPaginated(12, $params['p'] ?? 1);
+        $posts = $this->postTable->findPaginated(12, $params['p'] ?? 1);
 
         return $this->renderer->render('@blog/index', compact('posts'));
     }
-
 
     /**
      * Affiche un article

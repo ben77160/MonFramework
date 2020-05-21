@@ -3,7 +3,11 @@
 {% block title post.name %}
 
 {% block body %}
-<p class="text-muted">{{ post.created_at | ago }}</p>
+
 <h1>{{ post.name }}</h1>
-    {{ post.content | nl2br }}
+
+<p class="text-muted">{{ post.created_at | ago }}</p>
+
+{{ post.content | nl2br }}
+
 {% endblock %}

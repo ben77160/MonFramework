@@ -1,16 +1,17 @@
 <?php
-namespace App\Framework\Actions;
+namespace Framework\Actions;
 
-use App\Framework\Session\FlashService;
-use App\Framework\Validator;
 use Framework\Database\Table;
 use Framework\Renderer\RendererInterface;
 use Framework\Router;
+use Framework\Session\FlashService;
+use Framework\Validator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
 class CrudAction
 {
+
     /**
      * @var RendererInterface
      */
@@ -20,9 +21,9 @@ class CrudAction
      * @var Router
      */
     private $router;
+
     /**
-     * @var mixed
-     *
+     * @var Table
      */
     private $table;
 
@@ -35,18 +36,21 @@ class CrudAction
      * @var string
      */
     protected $viewPath;
+
     /**
      * @var string
      */
     protected $routePrefix;
 
+    /**
+     * @var string
+     */
     protected $messages = [
-        'create' => " L'élément a bien été crée",
-        'edit'   => " L'élément a bien été modifié"
+        'create' => "L'élément a bien été créé",
+        'edit'   => "L'élément a bien été modifié"
     ];
 
     use RouterAwareAction;
-
 
     public function __construct(
         RendererInterface $renderer,
@@ -131,13 +135,14 @@ class CrudAction
             if ($validator->isValid()) {
                 $this->table->insert($params);
                 $this->flash->success($this->messages['create']);
-                return $this->redirect($this->routePrefix .'.index');
+                return $this->redirect($this->routePrefix . '.index');
             }
             $item = $params;
             $errors = $validator->getErrors();
         }
 
         $params = $this->formParams(compact('item', 'errors'));
+
 
         return $this->renderer->render(
             $this->viewPath . '/create',

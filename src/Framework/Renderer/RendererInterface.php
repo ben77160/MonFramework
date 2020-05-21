@@ -4,18 +4,19 @@ namespace Framework\Renderer;
 
 interface RendererInterface
 {
+
     /**
-     * Permet de rajouter un chemin pour charger de vues
+     * Permet de rajouter un chamin pour charger les vues
      * @param string $namespace
-     * @param string|null $path
+     * @param null|string $path
      */
     public function addPath(string $namespace, ?string $path = null): void;
 
     /**
      * Permet de rendre une vue
-     * Le chemin peut-être précisé avec des namespace rajoutés via addPath()
-     *  $this->render('@blog/view');
-     *  $this->render('view');
+     * Le chemin peut être précisé avec des namespace rajoutés via addPath()
+     * $this->render('@blog/view');
+     * $this->render('view');
      * @param string $view
      * @param array $params
      * @return string
@@ -29,6 +30,4 @@ interface RendererInterface
      * @param mixed $value
      */
     public function addGlobal(string $key, $value): void;
-
-    public function get(string $class);
 }

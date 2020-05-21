@@ -4,10 +4,10 @@
 
 {% block body %}
 
-  <h1>Ajouter un article</h1>
+  <h1>Ajouter un article {{ item.name }}</h1>
 
-  <form action="{{ path(routePrefix ~ '.create') }}" method="post">
-    {% include viewPath ~ '/form.twig' %}
+  <form action="{{ path('blog.admin.create') }}" method="post">
+    {% include '@blog/admin/form.twig' %}
     <button class="btn btn-primary" type="submit">Ajouter</button>
   </form>
 

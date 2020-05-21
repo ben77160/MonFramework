@@ -1,10 +1,11 @@
 <?php
-namespace App\Framework\Twig;
+namespace Framework\Twig;
 
-use App\Framework\Session\FlashService;
+use Framework\Session\FlashService;
 
 class FlashExtension extends \Twig_Extension
 {
+
     /**
      * @var FlashService
      */
@@ -18,7 +19,7 @@ class FlashExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('flash', [$this,'getFlash'])
+            new \Twig_SimpleFunction('flash', [$this, 'getFlash'])
         ];
     }
 

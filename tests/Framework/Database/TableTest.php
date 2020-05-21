@@ -5,8 +5,8 @@ use Framework\Database\Table;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class TableTest extends TestCase
-{
+class TableTest extends TestCase {
+
     /**
      * @var Table
      */
@@ -24,8 +24,8 @@ class TableTest extends TestCase
         )');
 
         $this->table = new Table($pdo);
-        $reflexion = new \ReflectionClass($this->table);
-        $property = $reflexion->getProperty('table');
+        $reflection = new \ReflectionClass($this->table);
+        $property = $reflection->getProperty('table');
         $property->setAccessible(true);
         $property->setValue($this->table, 'test');
     }
@@ -38,4 +38,21 @@ class TableTest extends TestCase
         $this->assertInstanceOf(\stdClass::class, $test);
         $this->assertEquals('a1', $test->name);
     }
+
+    public function testFindList()
+    {
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a1")');
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a2")');
+        $this->assertEquals(['1' => 'a1', '2' => 'a2'], $this->table->findList());
+    }
+
+    public function testExists()
+    {
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a1")');
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a2")');
+        $this->assertTrue($this->table->exists(1));
+        $this->assertTrue($this->table->exists(2));
+        $this->assertFalse($this->table->exists(3123));
+    }
+
 }

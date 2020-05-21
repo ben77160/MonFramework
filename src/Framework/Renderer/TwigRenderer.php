@@ -1,21 +1,20 @@
 <?php
-
 namespace Framework\Renderer;
 
 class TwigRenderer implements RendererInterface
 {
+
     private $twig;
 
     public function __construct(\Twig_Environment $twig)
     {
-        //on initialise
         $this->twig = $twig;
     }
 
     /**
-     * Permet de rajouter un chemin pour charger les vues
-     * @inheritDoc
-     * @throws \Twig_Error_Loader
+     * Permet de rajouter un chamin pour charger les vues
+     * @param string $namespace
+     * @param null|string $path
      */
     public function addPath(string $namespace, ?string $path = null): void
     {
@@ -24,8 +23,12 @@ class TwigRenderer implements RendererInterface
 
     /**
      * Permet de rendre une vue
-     * Le chemin peut être précisé avec des namespace rajouté via addPath()
-     * @inheritDoc
+     * Le chemin peut être précisé avec des namespace rajoutés via addPath()
+     * $this->render('@blog/view');
+     * $this->render('view');
+     * @param string $view
+     * @param array $params
+     * @return string
      */
     public function render(string $view, array $params = []): string
     {
@@ -33,15 +36,13 @@ class TwigRenderer implements RendererInterface
     }
 
     /**
-     * @inheritDoc
+     * Permet de rajouter des variables globales à toutes les vues
+     *
+     * @param string $key
+     * @param mixed $value
      */
     public function addGlobal(string $key, $value): void
     {
         $this->twig->addGlobal($key, $value);
-    }
-
-    public function get(string $class)
-    {
-        // TODO: Implement get() method.
     }
 }

@@ -6,6 +6,7 @@ use Twig\Extension\DebugExtension;
 
 class TwigRendererFactory
 {
+
     public function __invoke(ContainerInterface $container): TwigRenderer
     {
         $viewPath = $container->get('views.path');

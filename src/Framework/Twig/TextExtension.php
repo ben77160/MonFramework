@@ -1,30 +1,32 @@
 <?php
-namespace App\Framework\Twig;
+
+namespace Framework\Twig;
 
 /**
  * Série d'extensions concernant les textes
  *
- * @package App\Framework\Twig
+ * @package Framework\Twig
  */
 class TextExtension extends \Twig_Extension
 {
+
     /**
-     * @return \Twig_SimpleFilter[]_
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters(): array
     {
-        return  [
-          new \Twig_SimpleFilter('excerpt', [$this, 'excerpt'])
+        return [
+            new \Twig_SimpleFilter('excerpt', [$this, 'excerpt'])
         ];
     }
 
     /**
      * Renvoie un extrait du contenu
-     * @param $content
+     * @param string $content
      * @param int $maxLength
      * @return string
      */
-    public function excerpt($content, $maxLength = 100)
+    public function excerpt(string $content, int $maxLength = 100): string
     {
         if (mb_strlen($content) > $maxLength) {
             $excerpt = mb_substr($content, 0, $maxLength);

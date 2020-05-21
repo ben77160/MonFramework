@@ -1,16 +1,18 @@
 <?php
-namespace App\Framework;
 
+namespace Tests\Framework;
+
+use Framework\Validator;
 use PHPUnit\Framework\TestCase;
-use function DI\string;
+use Tests\DatabaseTestCase;
 
-class ValidatorTest extends TestCase
+class ValidatorTest extends DatabaseTestCase
 {
+
     private function makeValidator(array $params)
     {
         return new Validator($params);
     }
-
 
     public function testRequiredIfFail()
     {
@@ -38,8 +40,12 @@ class ValidatorTest extends TestCase
 
     public function testSlugSuccess()
     {
-        $errors = $this->makeValidator(['slug' => 'aze-aze-azeaze34'])
+        $errors = $this->makeValidator([
+            'slug' => 'aze-aze-azeaze34',
+            'slug2'=> 'azeaze'
+        ])
             ->slug('slug')
+            ->slug('slug2')
             ->getErrors();
         $this->assertCount(0, $errors);
     }
@@ -49,6 +55,7 @@ class ValidatorTest extends TestCase
         $errors = $this->makeValidator([
             'slug'  => 'aze-aze-azeAze34',
             'slug2' => 'aze-aze_azeAze34',
+            'slug4' => 'aze-azeaze-',
             'slug3' => 'aze--aze-aze'
         ])
             ->slug('slug')
@@ -56,7 +63,7 @@ class ValidatorTest extends TestCase
             ->slug('slug3')
             ->slug('slug4')
             ->getErrors();
-        $this->assertCount(3, $errors);
+        $this->assertEquals(['slug', 'slug2', 'slug3', 'slug4'], array_keys($errors));
     }
 
     public function testLength()
@@ -65,7 +72,6 @@ class ValidatorTest extends TestCase
         $this->assertCount(0, $this->makeValidator($params)->length('slug', 3)->getErrors());
         $errors = $this->makeValidator($params)->length('slug', 12)->getErrors();
         $this->assertCount(1, $errors);
-        $this->assertEquals('Le champs slug doit contenir plus de 12 caractères', (string)$errors['slug']);
         $this->assertCount(1, $this->makeValidator($params)->length('slug', 3, 4)->getErrors());
         $this->assertCount(0, $this->makeValidator($params)->length('slug', 3, 20)->getErrors());
         $this->assertCount(0, $this->makeValidator($params)->length('slug', null, 20)->getErrors());
@@ -79,4 +85,19 @@ class ValidatorTest extends TestCase
         $this->assertCount(1, $this->makeValidator(['date' => '2012-21-12'])->dateTime('date')->getErrors());
         $this->assertCount(1, $this->makeValidator(['date' => '2013-02-29 11:12:13'])->dateTime('date')->getErrors());
     }
+
+    public function testExists()
+    {
+        $pdo = $this->getPdo();
+        $pdo->exec('CREATE TABLE test (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(255)
+        )');
+        $pdo->exec('INSERT INTO test (name) VALUES ("a1")');
+        $pdo->exec('INSERT INTO test (name) VALUES ("a2")');
+        $this->assertTrue($this->makeValidator(['category' => 1])->exists('category', 'test', $pdo)->isValid());
+        $this->assertFalse($this->makeValidator(['category' => 1121213])->exists('category', 'test', $pdo)->isValid());
+
+    }
+
 }
