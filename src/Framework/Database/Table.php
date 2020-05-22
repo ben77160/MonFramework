@@ -2,6 +2,7 @@
 
 namespace Framework\Database;
 
+use App\Framework\Database\NoRecordException;
 use Pagerfanta\Pagerfanta;
 
 class Table
@@ -10,7 +11,7 @@ class Table
     /**
      * @var \PDO
      */
-    private $pdo;
+    protected $pdo;
 
     /**
      * Nom de la table en BDD
@@ -55,6 +56,7 @@ class Table
 
     /**
      * Récupère une liste clef valeur de nos enregistrements
+     * @return array
      */
     public function findList(): array
     {
@@ -69,10 +71,52 @@ class Table
     }
 
     /**
+     * Récupère tous les enregistrements
+     *
+     * @return array
+     */
+    public function findAll():array
+    {
+        $query = $this->pdo
+            ->query("SELECT * FROM {$this->table}");
+        if ($this->entity) {
+            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
+        } else {
+            $query->setFetchMode(\PDO::FETCH_OBJ);
+        }
+        return $query->fetchAll();
+    }
+
+    /**
+     * Récupère une ligne par rapport à un champs
+     * @param string $field
+     * @param string $value
+     * @return mixed
+     * @throws NoRecordException
+     */
+    public function findBy(string $field, string $value)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE $field = ?");
+        $query->execute([$value]);
+        if ($this->entity) {
+            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
+        } else {
+            $query->setFetchMode(\PDO::FETCH_OBJ);
+        }
+        $record = $query->fetch();
+        if ($record === false) {
+            throw new NoRecordException();
+        }
+        return $record;
+    }
+
+
+    /**
      * Récupère un élément à partir de son ID
      *
      * @param int $id
      * @return mixed
+     * @throws NoRecordException
      */
     public function find(int $id)
     {
@@ -82,7 +126,11 @@ class Table
         if ($this->entity) {
             $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
         }
-        return $query->fetch() ?: null;
+        $record = $query->fetch();
+        if ($record === false) {
+            throw new NoRecordException();
+        }
+        return $record;
     }
 
     /**
@@ -96,8 +144,8 @@ class Table
     {
         $fieldQuery = $this->buildFieldQuery($params);
         $params["id"] = $id;
-        $statement = $this->pdo->prepare("UPDATE {$this->table} SET $fieldQuery WHERE id = :id");
-        return $statement->execute($params);
+        $query = $this->pdo->prepare("UPDATE {$this->table} SET $fieldQuery WHERE id = :id");
+        return $query->execute($params);
     }
 
     /**
@@ -113,8 +161,8 @@ class Table
             return ':' . $field;
         }, $fields));
         $fields = join(', ', $fields);
-        $statement = $this->pdo->prepare("INSERT INTO {$this->table} ($fields) VALUES ($values)");
-        return $statement->execute($params);
+        $query = $this->pdo->prepare("INSERT INTO {$this->table} ($fields) VALUES ($values)");
+        return $query->execute($params);
     }
 
     /**
@@ -124,8 +172,8 @@ class Table
      */
     public function delete(int $id): bool
     {
-        $statement = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
-        return $statement->execute([$id]);
+        $query = $this->pdo->prepare("DELETE FROM {$this->table} WHERE id = ?");
+        return $query->execute([$id]);
     }
 
     private function buildFieldQuery(array $params)
@@ -158,9 +206,9 @@ class Table
      */
     public function exists($id): bool
     {
-        $statement = $this->pdo->prepare("SELECT id FROM {$this->table} WHERE id = ?");
-        $statement->execute([$id]);
-        return $statement->fetchColumn() !== false;
+        $query = $this->pdo->prepare("SELECT id FROM {$this->table} WHERE id = ?");
+        $query->execute([$id]);
+        return $query->fetchColumn() !== false;
     }
 
     /**

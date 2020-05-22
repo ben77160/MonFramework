@@ -5,7 +5,8 @@ use Framework\Database\Table;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class TableTest extends TestCase {
+class TableTest extends TestCase
+{
 
     /**
      * @var Table
@@ -46,6 +47,30 @@ class TableTest extends TestCase {
         $this->assertEquals(['1' => 'a1', '2' => 'a2'], $this->table->findList());
     }
 
+    public function testFindAll()
+    {
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a1")');
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a2")');
+        $categories = $this->table->findAll();
+        $this->assertCount(2, $categories);
+        $this->assertInstanceOf(\stdClass::class, $categories[0]);
+        $this->assertEquals('a1', $categories[0]->name);
+        $this->assertEquals('a2', $categories[1]->name);
+    }
+
+
+    public function testFindBy()
+    {
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a1")');
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a2")');
+        $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a3")');
+        $category = $this->table->findBy('name', 'a1');
+        $this->assertInstanceOf(\stdClass::class, $category);
+        $this->assertEquals(1, (int)$category->id);
+        ;
+    }
+
+
     public function testExists()
     {
         $this->table->getPdo()->exec('INSERT INTO test (name) VALUES ("a1")');
@@ -54,5 +79,4 @@ class TableTest extends TestCase {
         $this->assertTrue($this->table->exists(2));
         $this->assertFalse($this->table->exists(3123));
     }
-
 }
