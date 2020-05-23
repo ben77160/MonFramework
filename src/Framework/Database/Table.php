@@ -110,6 +110,16 @@ class Table
     }
 
     /**
+     * Récupère le nombre d'enregistrement
+     * @return int
+     */
+    public function count():int
+    {
+        return $this->fetchColumn("SELECT COUNT(id) FROM {$this->table}");
+    }
+
+
+    /**
      * Met à jour un enregistrement au niveau de la base de données
      *
      * @param int $id
@@ -215,5 +225,21 @@ class Table
             throw new NoRecordException();
         }
         return $record;
+    }
+
+    /**
+     * Récupère la première colonne
+     * @param $query
+     * @param array $params
+     * @return mixed
+     */
+    private function fetchColumn($query, array $params = [])
+    {
+        $query = $this->pdo->prepare($query);
+        $query->execute($params);
+        if ($this->entity) {
+            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
+        }
+        return $query->fetchColumn();
     }
 }

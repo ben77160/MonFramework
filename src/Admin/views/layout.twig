@@ -14,8 +14,9 @@
 <body>
 
 <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-  <a class="navbar-brand" href="#">Administration</a>
+  <a class="navbar-brand" href="{{ path('admin') }}">Administration</a>
   <ul class="nav navbar-nav">
+      {{ admin_menu() }}
   </ul>
 </nav>
 
