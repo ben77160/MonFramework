@@ -33,6 +33,7 @@ class CategoryCrudAction extends CrudAction
             ->required('name', 'slug')
             ->length('name', 2, 250)
             ->length('slug', 2, 50)
+            ->unique('slug', $this->table->getTable(), $this->table->getPdo(), $request->getAttribute('id'))
             ->slug('slug');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Blog\Table;
 
-use App\Blog\Entity\PostEntity;
+use App\Blog\Entity\Post;
 use Framework\Database\PaginatedQuery;
 use Framework\Database\Table;
 use Pagerfanta\Pagerfanta;
@@ -10,7 +10,7 @@ use Pagerfanta\Pagerfanta;
 class PostTable extends Table
 {
 
-    protected $entity = PostEntity::class;
+    protected $entity = Post::class;
 
     protected $table = 'posts';
 
@@ -18,7 +18,9 @@ class PostTable extends Table
     {
         $query = new PaginatedQuery(
             $this->pdo,
-          "SELECT p. *, c.name as category_name, c.slug as category_slug  FROM posts as p LEFT JOIN categories as c ON                 c.id = p.category_id 
+            "SELECT p.*, c.name as category_name, c.slug as category_slug
+                FROM posts as p 
+                LEFT JOIN categories as c ON c.id = p.category_id 
                 ORDER BY p.created_at DESC",
             "SELECT COUNT(id) FROM {$this->table}",
             $this->entity
@@ -28,21 +30,32 @@ class PostTable extends Table
             ->setCurrentPage($currentPage);
     }
 
-
     public function findPaginatedPublicForCategory(int $perPage, int $currentPage, int $categoryId): Pagerfanta
     {
         $query = new PaginatedQuery(
             $this->pdo,
-            "SELECT p. *, c.name as category_name, c.slug as category_slug  FROM posts as p LEFT JOIN categories as c ON                 c.id = p.category_id 
-                 WHERE p.category_id = :category
+            "SELECT p.*, c.name as category_name, c.slug as category_slug
+                FROM posts as p 
+                LEFT JOIN categories as c ON c.id = p.category_id 
+                WHERE p.category_id = :category
                 ORDER BY p.created_at DESC",
             "SELECT COUNT(id) FROM {$this->table} WHERE category_id = :category",
             $this->entity,
-            ['category'=> $categoryId]
+            ['category' => $categoryId]
         );
         return (new Pagerfanta($query))
             ->setMaxPerPage($perPage)
             ->setCurrentPage($currentPage);
+    }
+
+    public function findWithCategory(int $id)
+    {
+        return $this->fetchOrFail('
+            SELECT p.*, c.name category_name, c.slug category_slug
+            FROM posts as p
+            LEFT JOIN categories as c ON c.id = p.category_id
+            WHERE p.id = ?
+        ', [$id]);
     }
 
     protected function paginationQuery()

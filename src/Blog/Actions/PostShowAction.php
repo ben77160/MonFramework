@@ -22,27 +22,34 @@ class PostShowAction
      * @var Router
      */
     private $router;
+
     /**
      * @var PostTable
      */
     private $postTable;
 
-
-
     use RouterAwareAction;
 
-    public function __construct(RendererInterface $renderer, Router $router, PostTable $postTable)
-    {
+    public function __construct(
+        RendererInterface $renderer,
+        Router $router,
+        PostTable $postTable
+    ) {
+    
         $this->renderer = $renderer;
         $this->router = $router;
         $this->postTable = $postTable;
     }
-
-
+    /**
+     * Affiche un article
+     *
+     * @param Request $request
+     * @return ResponseInterface|string
+     */
     public function __invoke(Request $request)
     {
         $slug = $request->getAttribute('slug');
-        $post = $this->postTable->find($request->getAttribute('id'));
+        $post = $this->postTable->findWithCategory($request->getAttribute('id'));
         if ($post->slug !== $slug) {
             return $this->redirect('blog.show', [
                 'slug' => $post->slug,
@@ -53,5 +60,4 @@ class PostShowAction
             'post' => $post
         ]);
     }
-
 }

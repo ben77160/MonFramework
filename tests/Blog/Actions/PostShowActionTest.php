@@ -2,7 +2,7 @@
 
 namespace Tests\App\Blog\Actions;
 
-use App\Blog\Actions\PostIndexAction;
+use App\Blog\Actions\PostShowAction;
 use App\Blog\Entity\Post;
 use App\Blog\Table\PostTable;
 use Framework\Renderer\RendererInterface;
@@ -16,7 +16,7 @@ class PostShowActionTest extends TestCase
 {
 
     /**
-     * @var PostIndexAction
+     * @var PostShowActionTest
      */
     private $action;
 
@@ -32,7 +32,7 @@ class PostShowActionTest extends TestCase
         $this->postTable = $this->prophesize(PostTable::class);
         // PDO
         $this->router = $this->prophesize(Router::class);
-        $this->action = new PostIndexAction(
+        $this->action = new PostShowAction(
             $this->renderer->reveal(),
             $this->router->reveal(),
             $this->postTable->reveal()
@@ -59,7 +59,7 @@ class PostShowActionTest extends TestCase
             'blog.show',
             ['id' => $post->id, 'slug' => $post->slug]
         )->willReturn('/demo2');
-        $this->postTable->find($post->id)->willReturn($post);
+        $this->postTable->findWithCategory($post->id)->willReturn($post);
 
         $response = call_user_func_array($this->action, [$request]);
         $this->assertEquals(301, $response->getStatusCode());
@@ -72,7 +72,7 @@ class PostShowActionTest extends TestCase
         $request = (new ServerRequest('GET', '/'))
             ->withAttribute('id', $post->id)
             ->withAttribute('slug', $post->slug);
-        $this->postTable->find($post->id)->willReturn($post);
+        $this->postTable->findWithCategory($post->id)->willReturn($post);
         $this->renderer->render('@blog/show', ['post' => $post])->willReturn('');
 
         $response = call_user_func_array($this->action, [$request]);

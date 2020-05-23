@@ -1,5 +1,6 @@
 <?php
-namespace App\Framework\Database;
+
+namespace Framework\Database;
 
 class NoRecordException extends \Exception
 {

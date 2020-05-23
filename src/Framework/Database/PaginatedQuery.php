@@ -24,9 +24,8 @@ class PaginatedQuery implements AdapterInterface
      * @var string|null
      */
     private $entity;
-
     /**
-     * @var array $params
+     * @var array
      */
     private $params;
 
@@ -36,14 +35,21 @@ class PaginatedQuery implements AdapterInterface
      * @param string $query Requête permettant de récupérer X résultats
      * @param string $countQuery Requête permettant de compter le nbre de résultats total
      * @param string|null $entity
+     * @param array $params
      */
-    public function __construct(\PDO $pdo, string $query, string $countQuery, ?string $entity, array $params = [])
-    {
+    public function __construct(
+        \PDO $pdo,
+        string $query,
+        string $countQuery,
+        ?string $entity,
+        array $params = []
+    ) {
+    
         $this->pdo = $pdo;
         $this->query = $query;
         $this->countQuery = $countQuery;
         $this->entity = $entity;
-        $this->params  = $params;
+        $this->params = $params;
     }
 
     /**

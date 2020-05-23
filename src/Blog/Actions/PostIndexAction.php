@@ -22,7 +22,6 @@ class PostIndexAction
      * @var PostTable
      */
     private $postTable;
-
     /**
      * @var CategoryTable
      */
@@ -30,8 +29,12 @@ class PostIndexAction
 
     use RouterAwareAction;
 
-    public function __construct(RendererInterface $renderer, PostTable $postTable, CategoryTable $categoryTable)
-    {
+    public function __construct(
+        RendererInterface $renderer,
+        PostTable $postTable,
+        CategoryTable $categoryTable
+    ) {
+    
         $this->renderer = $renderer;
         $this->postTable = $postTable;
         $this->categoryTable = $categoryTable;
@@ -42,7 +45,7 @@ class PostIndexAction
         $params = $request->getQueryParams();
         $posts = $this->postTable->findPaginatedPublic(12, $params['p'] ?? 1);
         $categories = $this->categoryTable->findAll();
+
         return $this->renderer->render('@blog/index', compact('posts', 'categories'));
     }
-
 }

@@ -2,7 +2,6 @@
 
 namespace Framework\Database;
 
-use App\Framework\Database\NoRecordException;
 use Pagerfanta\Pagerfanta;
 
 class Table
@@ -56,7 +55,6 @@ class Table
 
     /**
      * Récupère une liste clef valeur de nos enregistrements
-     * @return array
      */
     public function findList(): array
     {
@@ -75,10 +73,9 @@ class Table
      *
      * @return array
      */
-    public function findAll():array
+    public function findAll(): array
     {
-        $query = $this->pdo
-            ->query("SELECT * FROM {$this->table}");
+        $query = $this->pdo->query("SELECT * FROM {$this->table}");
         if ($this->entity) {
             $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
         } else {
@@ -89,27 +86,16 @@ class Table
 
     /**
      * Récupère une ligne par rapport à un champs
+     *
      * @param string $field
      * @param string $value
-     * @return mixed
+     * @return array
      * @throws NoRecordException
      */
     public function findBy(string $field, string $value)
     {
-        $query = $this->pdo->prepare("SELECT * FROM {$this->table} WHERE $field = ?");
-        $query->execute([$value]);
-        if ($this->entity) {
-            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
-        } else {
-            $query->setFetchMode(\PDO::FETCH_OBJ);
-        }
-        $record = $query->fetch();
-        if ($record === false) {
-            throw new NoRecordException();
-        }
-        return $record;
+        return $this->fetchOrFail("SELECT * FROM {$this->table} WHERE $field = ?", [$value]);
     }
-
 
     /**
      * Récupère un élément à partir de son ID
@@ -120,17 +106,7 @@ class Table
      */
     public function find(int $id)
     {
-        $query = $this->pdo
-            ->prepare("SELECT * FROM {$this->table} WHERE id = ?");
-        $query->execute([$id]);
-        if ($this->entity) {
-            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
-        }
-        $record = $query->fetch();
-        if ($record === false) {
-            throw new NoRecordException();
-        }
-        return $record;
+        return $this->fetchOrFail("SELECT * FROM {$this->table} WHERE id = ?", [$id]);
     }
 
     /**
@@ -217,5 +193,27 @@ class Table
     public function getPdo(): \PDO
     {
         return $this->pdo;
+    }
+
+    /**
+     * Permet d'éxécuter une requête et de récupérer le premier résultat
+     *
+     * @param string $query
+     * @param array $params
+     * @return mixed
+     * @throws NoRecordException
+     */
+    protected function fetchOrFail(string $query, array $params = [])
+    {
+        $query = $this->pdo->prepare($query);
+        $query->execute($params);
+        if ($this->entity) {
+            $query->setFetchMode(\PDO::FETCH_CLASS, $this->entity);
+        }
+        $record = $query->fetch();
+        if ($record === false) {
+            throw new NoRecordException();
+        }
+        return $record;
     }
 }

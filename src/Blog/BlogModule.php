@@ -26,7 +26,7 @@ class BlogModule extends Module
         $container->get(RendererInterface::class)->addPath('blog', __DIR__ . '/views');
         $router = $container->get(Router::class);
         $router->get($container->get('blog.prefix'), PostIndexAction::class, 'blog.index');
-        $router->get("$blogPrefix/{slug:[a-z\-0-9]+}", PostShowAction::class, 'blog.show');
+        $router->get("$blogPrefix/{slug:[a-z\-0-9]+}-{id:[0-9]+}", PostShowAction::class, 'blog.show');
         $router->get("$blogPrefix/category/{slug:[a-z\-0-9]+}", CategoryShowAction::class, 'blog.category');
 
         if ($container->has('admin.prefix')) {
