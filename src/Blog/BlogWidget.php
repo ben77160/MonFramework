@@ -8,13 +8,15 @@ use Framework\Renderer\RendererInterface;
 
 class BlogWidget implements AdminWidgetInterface
 {
+
     /**
-     * @var  RendererInterface
+     * @var RendererInterface
      */
     private $renderer;
-
+    /**
+     * @var PostTable
+     */
     private $postTable;
-
 
     public function __construct(RendererInterface $renderer, PostTable $postTable)
     {
@@ -25,7 +27,7 @@ class BlogWidget implements AdminWidgetInterface
     public function render(): string
     {
         $count = $this->postTable->count();
-         return $this->renderer->render('@blog/admin/widget', compact('count'));
+        return $this->renderer->render('@blog/admin/widget', compact('count'));
     }
 
     public function renderMenu(): string

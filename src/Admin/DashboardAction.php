@@ -1,16 +1,15 @@
 <?php
-
-
 namespace App\Admin;
 
 use Framework\Renderer\RendererInterface;
 
 class DashboardAction
 {
+
     /**
      * @var RendererInterface
      */
-     private $renderer;
+    private $renderer;
 
     /**
      * @var AdminWidgetInterface[]
@@ -28,6 +27,6 @@ class DashboardAction
         $widgets = array_reduce($this->widgets, function (string $html, AdminWidgetInterface $widget) {
             return $html . $widget->render();
         }, '');
-         return $this->renderer->render('@admin/dashboard', compact('widgets'));
+        return $this->renderer->render('@admin/dashboard', compact('widgets'));
     }
 }

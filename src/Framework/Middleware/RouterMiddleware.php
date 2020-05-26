@@ -1,14 +1,12 @@
 <?php
-
-
-namespace App\Framework\Middleware;
+namespace Framework\Middleware;
 
 use Framework\Router;
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RouterMiddleware
 {
+
     /**
      * @var Router
      */
@@ -21,7 +19,6 @@ class RouterMiddleware
 
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
-
         $route = $this->router->match($request);
         if (is_null($route)) {
             return $next($request);

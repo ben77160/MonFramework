@@ -1,7 +1,5 @@
 <?php
-
-
-namespace App\Framework\Middleware;
+namespace Framework\Middleware;
 
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
@@ -9,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class MethodMiddleware implements MiddlewareInterface
 {
+
     public function process(ServerRequestInterface $request, DelegateInterface $next)
     {
         $parsedBody = $request->getParsedBody();

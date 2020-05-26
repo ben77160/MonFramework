@@ -2,11 +2,13 @@
 
 use App\Admin\AdminModule;
 use App\Blog\BlogModule;
-use App\Framework\Middleware\DispatcherMiddleware;
-use App\Framework\Middleware\MethodMiddleware;
-use App\Framework\Middleware\NotFoundMiddleware;
-use App\Framework\Middleware\RouterMiddleware;
-use App\Framework\Middleware\TrailingSlashMiddleware;
+
+use Framework\Middleware\CsrfMiddleware;
+use Framework\Middleware\DispatcherMiddleware;
+use Framework\Middleware\MethodMiddleware;
+use Framework\Middleware\NotFoundMiddleware;
+use Framework\Middleware\RouterMiddleware;
+use Framework\Middleware\TrailingSlashMiddleware;
 use Middlewares\Whoops;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
@@ -23,6 +25,7 @@ $app = (new \Framework\App(dirname(__DIR__) . '/config/config.php'))
       ->pipe(Whoops::class)
       ->pipe(TrailingSlashMiddleware::class)
       ->pipe(MethodMiddleware::class)
+       ->pipe(CsrfMiddleware::class)
        ->pipe(RouterMiddleware::class)
        ->pipe(DispatcherMiddleware::class)
       ->pipe(NotFoundMiddleware::class);

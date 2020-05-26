@@ -1,18 +1,17 @@
 <?php
-
-
-namespace App\Framework\Middleware;
+namespace Framework\Middleware;
 
 use DI\Container;
-use Framework\Router\Route;
+use Framework\Router;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class DispatcherMiddleware
 {
+
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $container;
 
@@ -23,7 +22,7 @@ class DispatcherMiddleware
 
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
-        $route = $request->getAttribute(Route::class);
+        $route = $request->getAttribute(Router\Route::class);
         if (is_null($route)) {
             return $next($request);
         }

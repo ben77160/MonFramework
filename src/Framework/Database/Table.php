@@ -110,14 +110,14 @@ class Table
     }
 
     /**
-     * Récupère le nombre d'enregistrement
+     * Récupère le nbre d'enregistrement
+     *
      * @return int
      */
-    public function count():int
+    public function count(): int
     {
         return $this->fetchColumn("SELECT COUNT(id) FROM {$this->table}");
     }
-
 
     /**
      * Met à jour un enregistrement au niveau de la base de données
@@ -229,11 +229,12 @@ class Table
 
     /**
      * Récupère la première colonne
-     * @param $query
+     *
+     * @param string $query
      * @param array $params
      * @return mixed
      */
-    private function fetchColumn($query, array $params = [])
+    private function fetchColumn(string $query, array $params = [])
     {
         $query = $this->pdo->prepare($query);
         $query->execute($params);

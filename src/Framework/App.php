@@ -2,9 +2,7 @@
 
 namespace Framework;
 
-use GuzzleHttp\Psr7\Response;
-;
-
+use DI\ContainerBuilder;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
 use Psr\Container\ContainerInterface;
@@ -41,6 +39,7 @@ class App implements DelegateInterface
 
     public function __construct(string $definition)
     {
+
         $this->definition = $definition;
     }
 
@@ -48,7 +47,7 @@ class App implements DelegateInterface
      * Rajoute un module à l'application
      *
      * @param string $module
-     * @return $this
+     * @return App
      */
     public function addModule(string $module): self
     {
@@ -58,15 +57,15 @@ class App implements DelegateInterface
 
     /**
      * Ajoute un middleware
+     *
      * @param string $middleware
-     * @return $this
+     * @return App
      */
-    public function pipe(string $middleware) :self
+    public function pipe(string $middleware): self
     {
         $this->middlewares[] = $middleware;
         return $this;
     }
-
 
     public function process(ServerRequestInterface $request): ResponseInterface
     {
@@ -80,22 +79,21 @@ class App implements DelegateInterface
         }
     }
 
-
     public function run(ServerRequestInterface $request): ResponseInterface
     {
         foreach ($this->modules as $module) {
             $this->getContainer()->get($module);
         }
-        return  $this->process($request);
+        return $this->process($request);
     }
 
     /**
      * @return ContainerInterface
      */
-    private function getContainer(): ContainerInterface
+    public function getContainer(): ContainerInterface
     {
         if ($this->container === null) {
-            $builder = new \DI\ContainerBuilder();
+            $builder = new ContainerBuilder();
             $builder->addDefinitions($this->definition);
             foreach ($this->modules as $module) {
                 if ($module::DEFINITIONS) {
