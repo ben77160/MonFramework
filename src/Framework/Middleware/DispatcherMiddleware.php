@@ -11,7 +11,7 @@ class DispatcherMiddleware
 {
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     private $container;
 

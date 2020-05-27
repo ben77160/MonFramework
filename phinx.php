@@ -3,11 +3,11 @@ require 'public/index.php';
 
 $migrations = [];
 $seeds = [];
-foreach ($modules as $module){
-    if($module::MIGRATIONS){
+foreach ($modules as $module) {
+    if ($module::MIGRATIONS) {
         $migrations[] = $module::MIGRATIONS;
     }
-    if($module::SEEDS){
+    if ($module::SEEDS) {
         $seeds[] = $module::SEEDS;
     }
 };
@@ -28,4 +28,3 @@ return [
         ]
     ]
 ];
-

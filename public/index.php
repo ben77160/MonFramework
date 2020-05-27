@@ -11,7 +11,9 @@ use Framework\Middleware\RouterMiddleware;
 use Framework\Middleware\TrailingSlashMiddleware;
 use Middlewares\Whoops;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+chdir(dirname(__DIR__));
+
+require 'vendor/autoload.php';
 
 $modules = [
     AdminModule::class,
@@ -19,7 +21,7 @@ $modules = [
 ];
 
 
-$app = (new \Framework\App(dirname(__DIR__) . '/config/config.php'))
+$app = (new \Framework\App('config/config.php'))
       ->addModule(AdminModule::class)
       ->addModule(BlogModule::class)
       ->pipe(Whoops::class)
