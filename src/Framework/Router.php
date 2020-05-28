@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Framework\Middleware\CallableMiddlware;
 use Framework\Router\Route;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Expressive\Router\FastRouteRouter;
@@ -17,39 +18,42 @@ class Router
      */
     private $router;
 
-    public function __construct()
+    public function __construct(? string $cache = null)
     {
-        $this->router = new FastRouteRouter();
+        $this->router = new FastRouteRouter(null, null, [
+            FastRouteRouter::CONFIG_CACHE_ENABLED => !is_null($cache),
+            FastRouteRouter::CONFIG_CACHE_FILE => $cache
+        ]);
     }
 
     /**
      * @param string $path
-     * @param string|callable $callable
+     * @param $callable
      * @param string $name
      */
     public function get(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, $callable, ['GET'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['GET'], $name));
     }
 
     /**
      * @param string $path
-     * @param string|callable $callable
+     * @param $callable
      * @param string $name
      */
     public function post(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, $callable, ['POST'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['POST'], $name));
     }
 
     /**
      * @param string $path
-     * @param string|callable $callable
+     * @param $callable
      * @param string $name
      */
     public function delete(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, $callable, ['DELETE'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['DELETE'], $name));
     }
 
     /**
@@ -79,7 +83,7 @@ class Router
         if ($result->isSuccess()) {
             return new Route(
                 $result->getMatchedRouteName(),
-                $result->getMatchedMiddleware(),
+                $result->getMatchedRoute()->getMiddleware()->getCallable(),
                 $result->getMatchedParams()
             );
         }
