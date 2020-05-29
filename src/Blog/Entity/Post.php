@@ -12,19 +12,22 @@ class Post
 
     public $content;
 
-    public $created_at;
+    public $createdAt;
 
-    public $updated_at;
+    public $updatedAt;
 
-    public $category_name;
 
-    public function __construct()
+    public function setCreatedAt($dateTime)
     {
-        if ($this->created_at) {
-            $this->created_at = new \DateTime($this->created_at);
+        if (is_string($dateTime)) {
+            $this->createdAt = new \DateTime($dateTime);
         }
-        if ($this->updated_at) {
-            $this->updated_at = new \DateTime($this->updated_at);
+    }
+
+    public function setUpdatedAt($dateTime)
+    {
+        if (is_string($dateTime)) {
+            $this->updatedAt = new \DateTime($dateTime);
         }
     }
 }

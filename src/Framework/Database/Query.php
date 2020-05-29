@@ -11,6 +11,8 @@ class Query
 
     private $where = [];
 
+    private $entity;
+
     private $group;
 
     private $order;
@@ -20,6 +22,9 @@ class Query
     private $pdo;
 
     private $params;
+
+
+
 
     public function __construct(? \PDO $pdo = null)
     {
@@ -36,6 +41,7 @@ class Query
         return $this;
     }
 
+
     public function select(string ...$fields): self
     {
         $this->select = $fields;
@@ -49,18 +55,46 @@ class Query
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function count(): int
     {
         $this->select = ["COUNT(id)"];
         return $this->execute()->fetchColumn();
     }
 
+    /**
+     * @param array $params
+     * @return $this
+     */
     public function params(array $params): self
     {
          $this->params = $params;
          return $this;
     }
 
+    /**
+     * @param string $entity
+     * @return $this
+     */
+    public function into(string $entity): self
+    {
+        $this->entity = $entity;
+        return $this;
+    }
+
+    /**
+     * @return QueryResult
+     */
+    public function all(): QueryResult
+    {
+        return new QueryResult($this->execute()->fetchAll(\PDO::FETCH_ASSOC), $this->entity);
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $parts = ['SELECT'];
