@@ -16,7 +16,9 @@ class ValidationError
         'betweenLength' => 'Le champs %s doit contenir entre %d et %d caractères',
         'datetime' => 'Le champs %s doit être une date valide (%s)',
         'exists' => 'Le champs %s n\'existe pas sur dans la table %s',
-        'unique' => 'Le champs %s doit être unique'
+        'unique' => 'Le champs %s doit être unique',
+        'filetype' => 'Le champs %s n\'est pas au format valide (%s)',
+        'uploaded' => 'Vous devez uploader un fichier'
     ];
     /**
      * @var array

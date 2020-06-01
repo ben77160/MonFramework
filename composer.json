@@ -21,7 +21,8 @@
         "php-di/php-di": "5.4",
         "pagerfanta/pagerfanta": "^2.1",
         "middlewares/whoops": "0.4.1",
-        "doctrine/cache": "~1.4"
+        "doctrine/cache": "~1.4",
+        "intervention/image": "2.4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",

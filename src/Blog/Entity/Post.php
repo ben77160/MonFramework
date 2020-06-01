@@ -16,6 +16,8 @@ class Post
 
     public $updatedAt;
 
+    public $image;
+
 
     public function setCreatedAt($dateTime)
     {
@@ -29,5 +31,11 @@ class Post
         if (is_string($dateTime)) {
             $this->updatedAt = new \DateTime($dateTime);
         }
+    }
+
+    public function getThumb()
+    {
+        ['filename' => $filename, 'extension' => $extension] = pathinfo($this->image);
+        return '/uploads/posts/' . $filename . '_thumb.' .$extension;
     }
 }

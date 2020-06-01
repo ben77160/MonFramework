@@ -1,10 +1,20 @@
 {{ csrf_input() }}
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-6">
     {{ field('name', item.name, "Titre de l'article") }}
   </div>
-  <div class="col-md-4">
+  <div class="col-md-6">
     {{ field('category_id', item.category_id, "Catégorie", {options: categories}) }}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    {% if item.image %}
+      <img src="{{ item.thumb }}" alt="" style="width:100%;">
+    {% endif %}
+  </div>
+  <div class="col-md-4">
+    {{ field('image', item.slug, "Image", {type: 'file'}) }}
   </div>
   <div class="col-md-4">
     {{ field('slug', item.slug, "Lien") }}
