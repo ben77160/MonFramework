@@ -1,7 +1,7 @@
 <?php
 namespace Framework\Actions;
 
-use App\Framework\Database\Hydrator;
+use Framework\Database\Hydrator;
 use Framework\Database\Table;
 use Framework\Renderer\RendererInterface;
 use Framework\Router;
@@ -89,7 +89,7 @@ class CrudAction
     public function index(Request $request): string
     {
         $params = $request->getQueryParams();
-        $items = $this->table->findPaginated(12, $params['p'] ?? 1);
+        $items = $this->table->findAll()->paginate(12, $params['p'] ?? 1);
 
         return $this->renderer->render($this->viewPath . '/index', compact('items'));
     }
@@ -98,7 +98,6 @@ class CrudAction
      * Edite un élément
      * @param Request $request
      * @return ResponseInterface|string
-     * @throws \Framework\Database\NoRecordException
      */
     public function edit(Request $request)
     {
@@ -132,11 +131,11 @@ class CrudAction
         if ($request->getMethod() === 'POST') {
             $validator = $this->getValidator($request);
             if ($validator->isValid()) {
-                $this->table->insert($this->getParams($request));
+                $this->table->insert($this->getParams($request, $item));
                 $this->flash->success($this->messages['create']);
                 return $this->redirect($this->routePrefix . '.index');
             }
-            $item = $request->getParsedBody();
+            Hydrator::hydrate($request->getParsedBody(), $item);
             $errors = $validator->getErrors();
         }
 
@@ -164,9 +163,9 @@ class CrudAction
      * @param Request $request
      * @return array
      */
-    protected function getParams(Request $request, $index): array
+    protected function getParams(Request $request, $item): array
     {
-        return array_filter($request->getParsedBody(), function ($key) {
+        return array_filter(array_merge($request->getParsedBody(), $request->getUploadedFiles()), function ($key) {
             return in_array($key, []);
         }, ARRAY_FILTER_USE_KEY);
     }

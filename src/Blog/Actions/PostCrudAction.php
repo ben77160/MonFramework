@@ -22,7 +22,6 @@ class PostCrudAction extends CrudAction
      * @var CategoryTable
      */
     private $categoryTable;
-
     /**
      * @var PostUpload
      */
@@ -71,7 +70,7 @@ class PostCrudAction extends CrudAction
     protected function getParams(ServerRequestInterface $request, $post): array
     {
         $params = array_merge($request->getParsedBody(), $request->getUploadedFiles());
-         // Uploader le fichier
+        // Uploader le fichier
         $image = $this->postUpload->upload($params['image'], $post->image);
         if ($image) {
             $params['image'] = $image;
@@ -79,14 +78,14 @@ class PostCrudAction extends CrudAction
             unset($params['image']);
         }
         $params = array_filter($params, function ($key) {
-            return in_array($key, ['name', 'slug', 'content', 'created_at', 'category_id', 'image']);
+            return in_array($key, ['name', 'slug', 'content', 'created_at', 'category_id', 'image', 'published']);
         }, ARRAY_FILTER_USE_KEY);
         return array_merge($params, ['updated_at' => date('Y-m-d H:i:s')]);
     }
 
     protected function getValidator(ServerRequestInterface $request)
     {
-        $validator =  parent::getValidator($request)
+        $validator = parent::getValidator($request)
             ->required('content', 'name', 'slug', 'created_at', 'category_id')
             ->length('content', 10)
             ->length('name', 2, 250)

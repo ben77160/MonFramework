@@ -1,9 +1,9 @@
 <?php
 namespace Framework\Middleware;
 
-use DI\Container;
 use Framework\Router;
 use GuzzleHttp\Psr7\Response;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -11,11 +11,11 @@ class DispatcherMiddleware
 {
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     private $container;
 
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }

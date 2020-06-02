@@ -7,12 +7,20 @@
 <h1>{{ post.name }}</h1>
 
 <p class="text-muted">
-  {% if post.category_id %}
-    <a href="{{ path('blog.category', {slug: post.category_slug}) }}" title="{{ post.category_name }}">{{ post.category_name }}</a>
+  {% if post.categoryId %}
+    <a href="{{ path('blog.category', {slug: post.categorySlug}) }}" title="{{ post.categoryName }}">{{ post.categoryName }}</a>
   {% endif %}
-  {{ post.created_at | ago }}
+  {{ post.createdAt | ago }}
 </p>
 
-{{ post.content | nl2br }}
+  <p>
+    {% if post.image %}
+      <img src="{{ post.imageUrl }}" alt="{{ post.name }}" style="width:100%;">
+    {% endif %}
+  </p>
+
+  <p>
+    {{ post.content | nl2br }}
+  </p>
 
 {% endblock %}

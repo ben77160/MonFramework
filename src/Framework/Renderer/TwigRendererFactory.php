@@ -3,7 +3,6 @@ namespace Framework\Renderer;
 
 use Psr\Container\ContainerInterface;
 use Twig\Extension\DebugExtension;
-use function DI\value;
 
 class TwigRendererFactory
 {

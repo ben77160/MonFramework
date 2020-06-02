@@ -1,12 +1,13 @@
 <?php
 namespace Framework\Router;
 
-use DI\Container;
 use Framework\Router;
+use Psr\Container\ContainerInterface;
 
 class RouterFactory
 {
-    public function __invoke(Container $container)
+
+    public function __invoke(ContainerInterface $container)
     {
         $cache = null;
         if ($container->get('env') === 'production') {

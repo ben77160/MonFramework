@@ -1,13 +1,12 @@
 <?php
-
-
-namespace App\Framework;
+namespace Framework;
 
 use Intervention\Image\ImageManager;
 use Psr\Http\Message\UploadedFileInterface;
 
 class Upload
 {
+
     protected $path;
 
     protected $formats = [];
@@ -30,10 +29,8 @@ class Upload
             $this->delete($oldFile);
             $targetPath = $this->addCopySuffix($this->path . DIRECTORY_SEPARATOR . $file->getClientFilename());
             $dirname = pathinfo($targetPath, PATHINFO_DIRNAME);
-            $old = umask(0);
             if (!file_exists($dirname)) {
                 mkdir($dirname, 777, true);
-                umask($old);
             }
             $file->moveTo($targetPath);
             $this->generateFormats($targetPath);

@@ -18,17 +18,17 @@ class Router
      */
     private $router;
 
-    public function __construct(? string $cache = null)
+    public function __construct(?string $cache = null)
     {
         $this->router = new FastRouteRouter(null, null, [
             FastRouteRouter::CONFIG_CACHE_ENABLED => !is_null($cache),
-            FastRouteRouter::CONFIG_CACHE_FILE => $cache
+            FastRouteRouter::CONFIG_CACHE_FILE    => $cache
         ]);
     }
 
     /**
      * @param string $path
-     * @param $callable
+     * @param string|callable $callable
      * @param string $name
      */
     public function get(string $path, $callable, ?string $name = null)
@@ -38,7 +38,7 @@ class Router
 
     /**
      * @param string $path
-     * @param $callable
+     * @param string|callable $callable
      * @param string $name
      */
     public function post(string $path, $callable, ?string $name = null)
@@ -48,7 +48,7 @@ class Router
 
     /**
      * @param string $path
-     * @param $callable
+     * @param string|callable $callable
      * @param string $name
      */
     public function delete(string $path, $callable, ?string $name = null)
