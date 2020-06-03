@@ -6,10 +6,10 @@ use App\Blog\Actions\CategoryShowAction;
 use App\Blog\Actions\PostCrudAction;
 use App\Blog\Actions\PostIndexAction;
 use App\Blog\Actions\PostShowAction;
-use DI\Container;
 use Framework\Module;
 use Framework\Renderer\RendererInterface;
 use Framework\Router;
+use Psr\Container\ContainerInterface;
 
 class BlogModule extends Module
 {
@@ -20,7 +20,7 @@ class BlogModule extends Module
 
     const SEEDS =  __DIR__ . '/db/seeds';
 
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $blogPrefix = $container->get('blog.prefix');
         $container->get(RendererInterface::class)->addPath('blog', __DIR__ . '/views');

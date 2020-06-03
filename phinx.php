@@ -10,21 +10,21 @@ foreach ($modules as $module) {
     if ($module::SEEDS) {
         $seeds[] = $module::SEEDS;
     }
-};
+}
 
 return [
-    'paths' => [
+    'paths'        => [
         'migrations' => $migrations,
-        'seeds' => $seeds
+        'seeds'      => $seeds
     ],
     'environments' => [
         'default_database' => 'development',
-        'development' => [
+        'development'      => [
             'adapter' => 'mysql',
             'host' => $app->getContainer()->get('database.host'),
             'name' => $app->getContainer()->get('database.name'),
             'user' => $app->getContainer()->get('database.username'),
-            'pass' => $app->getContainer()->get('database.password'),
+            'pass' => $app->getContainer()->get('database.password')
         ]
     ]
 ];
