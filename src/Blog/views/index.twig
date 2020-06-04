@@ -30,7 +30,7 @@
                 {% if post.image %}
                   <img src="{{ post.thumb }}" alt="{{ post.name }}" style="width:100%;">
                 {% endif %}
-                <div class="card-block">
+                <div class="card-body">
                   <h4 class="card-title">
                     <a href="{{ path('blog.show', {slug: post.slug, id: post.id}) }}">
                       {{ post.name }}

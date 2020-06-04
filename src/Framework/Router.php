@@ -33,7 +33,7 @@ class Router
      */
     public function get(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, new  CallableMiddlware($callable), ['GET'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['GET'], $name));
     }
 
     /**
@@ -43,7 +43,7 @@ class Router
      */
     public function post(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, new  CallableMiddlware($callable), ['POST'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['POST'], $name));
     }
 
     /**
@@ -53,7 +53,7 @@ class Router
      */
     public function delete(string $path, $callable, ?string $name = null)
     {
-        $this->router->addRoute(new ZendRoute($path, new  CallableMiddlware($callable), ['DELETE'], $name));
+        $this->router->addRoute(new ZendRoute($path, new CallableMiddlware($callable), ['DELETE'], $name));
     }
 
     /**
