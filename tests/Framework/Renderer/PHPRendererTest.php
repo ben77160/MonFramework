@@ -4,7 +4,8 @@ namespace Tests\Framework;
 use Framework\Renderer;
 use PHPUnit\Framework\TestCase;
 
-class RendererTest extends TestCase {
+class RendererTest extends TestCase
+{
 
     private $renderer;
 
@@ -13,28 +14,29 @@ class RendererTest extends TestCase {
         $this->renderer = new Renderer\PHPRenderer(__DIR__ . '/views');
     }
 
-    public function testRenderTheRightPath() {
+    public function testRenderTheRightPath()
+    {
         $this->renderer->addPath('blog', __DIR__ . '/views');
         $content = $this->renderer->render('@blog/demo');
         $this->assertEquals('Salut les gens', $content);
     }
 
-    public function testRenderTheDefaultPath() {
+    public function testRenderTheDefaultPath()
+    {
         $content = $this->renderer->render('demo');
         $this->assertEquals('Salut les gens', $content);
     }
 
-    public function testRenderWithParams() {
+    public function testRenderWithParams()
+    {
         $content = $this->renderer->render('demoparams', ['nom' => 'Marc']);
         $this->assertEquals('Salut Marc', $content);
     }
 
-    public function testGlobalParameters() {
+    public function testGlobalParameters()
+    {
         $this->renderer->addGlobal('nom', 'Marc');
         $content = $this->renderer->render('demoparams');
         $this->assertEquals('Salut Marc', $content);
     }
-
-
-
 }

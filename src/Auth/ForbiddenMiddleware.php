@@ -28,14 +28,28 @@ class ForbiddenMiddleware implements MiddlewareInterface
         $this->session = $session;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param DelegateInterface $delegate
+     * @return ResponseInterface
+     */
     public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
     {
         try {
             return $delegate->process($request);
         } catch (ForbiddenException $exception) {
-            $this->session->set('auth.redirect', $request->getUri()->getPath());
-            (new FlashService($this->session))->error('Vous devez posséder un compte pour accéder à cette page');
-            return new RedirectResponse($this->loginPath);
+            return $this->redirectLogin($request);
+        } catch (\TypeError $error) {
+            if (strpos($error->getMessage(), \Framework\Auth\User::class) !== false) {
+                return $this->redirectLogin($request);
+            }
+            throw $error;
         }
+    }
+    public function redirectLogin(ServerRequestInterface $request): ResponseInterface
+    {
+        $this->session->set('auth.redirect', $request->getUri()->getPath());
+        (new FlashService($this->session))->error('Vous devez posséder un compte pour accéder à cette page');
+        return new RedirectResponse($this->loginPath);
     }
 }

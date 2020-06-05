@@ -78,5 +78,4 @@ class PostShowActionTest extends TestCase
         $response = call_user_func_array($this->action, [$request]);
         $this->assertEquals(true, true);
     }
-
 }

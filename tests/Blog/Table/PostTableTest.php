@@ -2,7 +2,6 @@
 
 namespace Tests\App\Blog\Table;
 
-
 use App\Blog\Entity\Post;
 use App\Blog\Table\PostTable;
 use Framework\Database\NoRecordException;
@@ -64,5 +63,4 @@ class PostTableTest extends DatabaseTestCase
         $count = $this->postTable->getPdo()->query('SELECT COUNT(id) FROM posts')->fetchColumn();
         $this->assertEquals(1, (int)$count);
     }
-
 }

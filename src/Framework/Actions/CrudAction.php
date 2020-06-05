@@ -50,6 +50,10 @@ class CrudAction
         'create' => "L'élément a bien été créé",
         'edit'   => "L'élément a bien été modifié"
     ];
+    /**
+     * @var array
+     */
+    protected $acceptedParams = [];
 
     use RouterAwareAction;
 
@@ -166,7 +170,7 @@ class CrudAction
     protected function getParams(Request $request, $item): array
     {
         return array_filter(array_merge($request->getParsedBody(), $request->getUploadedFiles()), function ($key) {
-            return in_array($key, []);
+            return in_array($key, $this->acceptedParams);
         }, ARRAY_FILTER_USE_KEY);
     }
 
@@ -184,11 +188,11 @@ class CrudAction
     /**
      * Génère une nouvelle entité pour l'action de création
      *
-     * @return array
+     * @return \stdClass
      */
     protected function getNewEntity()
     {
-        return [];
+        return new \stdClass();
     }
 
     /**

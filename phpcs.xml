@@ -6,7 +6,10 @@
     <arg value="p"/>
 
     <file>src</file>
+    <file>tests</file>
     <file>public/index.php</file>
+
+    <exclude-pattern>*/demo.php</exclude-pattern>
 
     <rule ref="PSR2">
         <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>

@@ -6,7 +6,8 @@ use GuzzleHttp\Psr7\ServerRequest;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use PHPUnit\Framework\TestCase;
 
-class MethodMiddlewareTest extends TestCase {
+class MethodMiddlewareTest extends TestCase
+{
 
     /**
      * @var MethodMiddleware
@@ -18,7 +19,8 @@ class MethodMiddlewareTest extends TestCase {
         $this->middleware = new MethodMiddleware();
     }
 
-    public function testAddMethod () {
+    public function testAddMethod()
+    {
         $delegate = $this->getMockBuilder(DelegateInterface::class)
             ->setMethods(['process'])
             ->getMock();
@@ -33,5 +35,4 @@ class MethodMiddlewareTest extends TestCase {
             ->withParsedBody(['_method' => 'DELETE']);
         $this->middleware->process($request, $delegate);
     }
-
 }

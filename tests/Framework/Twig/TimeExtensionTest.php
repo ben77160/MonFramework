@@ -4,7 +4,8 @@ namespace Tests\Framework\Twig;
 use Framework\Twig\TimeExtension;
 use PHPUnit\Framework\TestCase;
 
-class TimeExtensionTest extends TestCase {
+class TimeExtensionTest extends TestCase
+{
 
     /**
      * @var TimeExtension
@@ -20,8 +21,11 @@ class TimeExtensionTest extends TestCase {
     {
         $date = new \DateTime();
         $format = 'd/m/Y H:i';
-        $result = '<span class="timeago" datetime="' . $date->format(\DateTime::ISO8601) . '">' . $date->format($format) . '</span>';
+        $result = '<span class="timeago" datetime="' .
+            $date->format(\DateTime::ISO8601) .
+            '">' .
+            $date->format($format) .
+            '</span>';
         $this->assertEquals($result, $this->timeExtension->ago($date));
     }
-
 }

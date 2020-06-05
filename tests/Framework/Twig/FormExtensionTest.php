@@ -18,13 +18,15 @@ class FormExtensionTest extends TestCase
         $this->formExtension = new FormExtension();
     }
 
-    private function trim(string $string) {
+    private function trim(string $string)
+    {
         $lines = explode(PHP_EOL, $string);
         $lines = array_map('trim', $lines);
         return implode('', $lines);
     }
 
-    public function assertSimilar(string $expected, string $actual) {
+    public function assertSimilar(string $expected, string $actual)
+    {
         $this->assertEquals($this->trim($expected), $this->trim($actual));
     }
 
@@ -46,7 +48,8 @@ class FormExtensionTest extends TestCase
             'name',
             'demo',
             'Titre',
-            ['class' => 'demo']);
+            ['class' => 'demo']
+        );
         $this->assertSimilar("
             <div class=\"form-group\">
               <label for=\"name\">Titre</label>
@@ -62,7 +65,8 @@ class FormExtensionTest extends TestCase
             'name',
             'demo',
             'Titre',
-            ['type' => 'textarea']);
+            ['type' => 'textarea']
+        );
         $this->assertSimilar("
             <div class=\"form-group\">
               <label for=\"name\">Titre</label>
@@ -101,5 +105,4 @@ class FormExtensionTest extends TestCase
               </select>
             </div>', $html);
     }
-
 }

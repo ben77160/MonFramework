@@ -5,7 +5,8 @@ use Framework\Database\Table;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
-class TableTest extends TestCase {
+class TableTest extends TestCase
+{
 
     /**
      * @var Table

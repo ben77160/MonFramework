@@ -4,14 +4,17 @@ namespace Tests\Framework\Database;
 use Framework\Database\Query;
 use Tests\DatabaseTestCase;
 
-class QueryTest extends DatabaseTestCase {
+class QueryTest extends DatabaseTestCase
+{
 
-    public function testSimpleQuery() {
+    public function testSimpleQuery()
+    {
         $query = (new Query())->from('posts')->select('name');
         $this->assertEquals('SELECT name FROM posts', (string)$query);
     }
 
-    public function testWithWhere() {
+    public function testWithWhere()
+    {
         $query = (new Query())
             ->from('posts', 'p')
             ->where('a = :a OR b = :b', 'c = :c');
@@ -23,7 +26,8 @@ class QueryTest extends DatabaseTestCase {
         $this->assertEquals('SELECT * FROM posts as p WHERE (a = :a OR b = :b) AND (c = :c)', (string)$query2);
     }
 
-    public function testFetchAll() {
+    public function testFetchAll()
+    {
         $pdo = $this->getPDO();
         $this->migrateDatabase($pdo);
         $this->seedDatabase($pdo);
@@ -41,7 +45,8 @@ class QueryTest extends DatabaseTestCase {
         $this->assertEquals(29, $posts);
     }
 
-    public function testHydrateEntity() {
+    public function testHydrateEntity()
+    {
         $pdo = $this->getPDO();
         $this->migrateDatabase($pdo);
         $this->seedDatabase($pdo);
@@ -52,17 +57,19 @@ class QueryTest extends DatabaseTestCase {
         $this->assertEquals('demo', substr($posts[0]->getSlug(), -4));
     }
 
-    public function testLimitOrder() {
+    public function testLimitOrder()
+    {
         $query = (new Query())
             ->from('posts', 'p')
             ->select('name')
             ->order('id DESC')
             ->order('name ASC')
-            ->limit(10,5);
+            ->limit(10, 5);
         $this->assertEquals('SELECT name FROM posts as p ORDER BY id DESC, name ASC LIMIT 5, 10', (string)$query);
     }
 
-    public function testLazyHydrate() {
+    public function testLazyHydrate()
+    {
         $pdo = $this->getPDO();
         $this->migrateDatabase($pdo);
         $this->seedDatabase($pdo);
@@ -75,13 +82,16 @@ class QueryTest extends DatabaseTestCase {
         $this->assertSame($post, $post2);
     }
 
-    public function testJoinQuery() {
+    public function testJoinQuery()
+    {
         $query = (new Query())
             ->from('posts', 'p')
             ->select('name')
             ->join('categories as c', 'c.id = p.category_id')
             ->join('categories as c2', 'c2.id = p.category_id', 'inner');
-        $this->assertEquals('SELECT name FROM posts as p LEFT JOIN categories as c ON c.id = p.category_id INNER JOIN categories as c2 ON c2.id = p.category_id', (string)$query);
+        $this->assertEquals('SELECT name ' .
+            'FROM posts as p ' .
+            'LEFT JOIN categories as c ON c.id = p.category_id ' .
+            'INNER JOIN categories as c2 ON c2.id = p.category_id', (string)$query);
     }
-
 }
