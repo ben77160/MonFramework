@@ -3,6 +3,7 @@
 use App\Admin\AdminModule;
 use App\Auth\AuthModule;
 use App\Blog\BlogModule;
+use App\Contact\ContactModule;
 use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\DispatcherMiddleware;
 use Framework\Middleware\MethodMiddleware;
@@ -18,6 +19,7 @@ require 'vendor/autoload.php';
 
 $app = (new \Framework\App('config/config.php'))
     ->addModule(AdminModule::class)
+    ->addModule(ContactModule::class)
     ->addModule(BlogModule::class)
     ->addModule(AuthModule::class);
 

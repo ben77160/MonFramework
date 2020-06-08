@@ -42,7 +42,6 @@ class App implements DelegateInterface
 
     public function __construct($definition = null)
     {
-
         $this->definition = $definition;
     }
 

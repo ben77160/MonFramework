@@ -50,6 +50,7 @@ class CrudAction
         'create' => "L'élément a bien été créé",
         'edit'   => "L'élément a bien été modifié"
     ];
+
     /**
      * @var array
      */

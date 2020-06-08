@@ -36,4 +36,3 @@ class BlogModule extends Module
         }
     }
 }
-

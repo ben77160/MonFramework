@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Auth;
 
 use Framework\Auth\ForbiddenException;
@@ -32,6 +33,7 @@ class ForbiddenMiddleware implements MiddlewareInterface
      * @param ServerRequestInterface $request
      * @param DelegateInterface $delegate
      * @return ResponseInterface
+     * @throws \TypeError
      */
     public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
     {
@@ -46,6 +48,7 @@ class ForbiddenMiddleware implements MiddlewareInterface
             throw $error;
         }
     }
+
     public function redirectLogin(ServerRequestInterface $request): ResponseInterface
     {
         $this->session->set('auth.redirect', $request->getUri()->getPath());

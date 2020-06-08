@@ -2,7 +2,6 @@
 namespace App\Auth;
 
 use Framework\Auth;
-use Twig_Extension;
 
 class AuthTwigExtension extends \Twig_Extension
 {

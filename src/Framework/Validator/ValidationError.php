@@ -18,7 +18,8 @@ class ValidationError
         'exists' => 'Le champs %s n\'existe pas sur dans la table %s',
         'unique' => 'Le champs %s doit être unique',
         'filetype' => 'Le champs %s n\'est pas au format valide (%s)',
-        'uploaded' => 'Vous devez uploader un fichier'
+        'uploaded' => 'Vous devez uploader un fichier',
+        'email' => 'Cet email ne semble pas valide'
     ];
     /**
      * @var array

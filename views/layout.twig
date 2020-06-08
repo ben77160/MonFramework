@@ -14,9 +14,12 @@
 <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Mon super site</a>
     <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item {{ is_subpath('blog.index') ? 'active' }}">
             <a class="nav-link" href="{{ path('blog.index') }}">Blog</a>
         </li>
+      <li class="nav-item {{ is_subpath('contact') ? 'active' }}">
+        <a class="nav-link" href="{{ path('contact') }}">Nous contacter</a>
+      </li>
     </ul>
     <div class="navbar-nav mr-auto">
         {% if current_user() %}
