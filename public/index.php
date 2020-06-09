@@ -4,6 +4,7 @@ use App\Admin\AdminModule;
 use App\Auth\AuthModule;
 use App\Blog\BlogModule;
 use App\Contact\ContactModule;
+use Framework\Auth\RoleMiddlewareFactory;
 use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\DispatcherMiddleware;
 use Framework\Middleware\MethodMiddleware;
@@ -28,7 +29,10 @@ $container = $app->getContainer();
 $app->pipe(Whoops::class)
     ->pipe(TrailingSlashMiddleware::class)
     ->pipe(\App\Auth\ForbiddenMiddleware::class)
-    ->pipe($container->get('admin.prefix'), \Framework\Auth\LoggedInMiddleware::class)
+    ->pipe(
+        $container->get('admin.prefix'),
+        $container->get(RoleMiddlewareFactory::class)->makeForRole('admin')
+    )
     ->pipe(MethodMiddleware::class)
     ->pipe(CsrfMiddleware::class)
     ->pipe(RouterMiddleware::class)
