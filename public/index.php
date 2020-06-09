@@ -21,7 +21,8 @@ $app = (new \Framework\App('config/config.php'))
     ->addModule(AdminModule::class)
     ->addModule(ContactModule::class)
     ->addModule(BlogModule::class)
-    ->addModule(AuthModule::class);
+    ->addModule(AuthModule::class)
+    ->addModule(\App\Account\AccountModule::class);
 
 $container = $app->getContainer();
 $app->pipe(Whoops::class)

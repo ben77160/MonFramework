@@ -2,7 +2,7 @@
     "name": "benjamin/mon-framework",
     "authors": [
         {
-            "name": "benjamin",
+            "name": "Benjamin",
             "email": "b.nsingi07@gmail.com"
         }
     ],
@@ -23,8 +23,7 @@
         "middlewares/whoops": "^0.4.1",
         "doctrine/cache": "~1.4",
         "intervention/image": "^2.4",
-        "swiftmailer/swiftmailer": "^6.0",
-        "http-interop/http-middleware": "^0.5.0"
+        "swiftmailer/swiftmailer": "^6.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",

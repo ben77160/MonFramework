@@ -13,7 +13,7 @@
   <form action="{{ path('auth.login') }}" method="post">
     {{ csrf_input() }}
     {{ field('username', null, 'Nom d\'utilisateur') }}
-    {{ field('password', null, 'Mot de passe') }}
+    {{ field('password', null, 'Mot de passe', {type: 'password'}) }}
     <button class="btn btn-primary">Se connecter</button>
   </form>
 

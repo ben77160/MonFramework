@@ -21,16 +21,20 @@
         <a class="nav-link" href="{{ path('contact') }}">Nous contacter</a>
       </li>
     </ul>
-    <div class="navbar-nav mr-auto">
+    <div class="navbar-nav">
         {% if current_user() %}
-            <div class="navbar-test">Connecté en tant que {{ current_user().username }}</div>
-            <form class="nav-item active" method="post" action="{{ path('auth.logout') }}">
+            <div class="navbar-text">Connecté en tant que {{ current_user().username }}</div>
+            &nbsp; &nbsp;
+            <form method="post" action="{{ path('auth.logout') }}">
               {{ csrf_input() }}
-                <button class="nav-link">Se déconnecter</button>
+                <button class="btn btn-danger">Se déconnecter</button>
             </form>
         {% else %}
             <div class="nav-item active">
                 <a class="nav-link" href="{{ path('auth.login') }}">Se connecter</a>
+            </div>
+            <div class="nav-item active">
+              <a class="nav-link" href="{{ path('account.signup') }}">S'inscrire</a>
             </div>
         {% endif %}
     </div>
