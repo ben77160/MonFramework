@@ -21,8 +21,7 @@ class DispatcherMiddlewareTest extends TestCase
         $request = (new ServerRequest('GET', '/demo'))->withAttribute(Route::class, $route);
         $container = $this->getMockBuilder(ContainerInterface::class)->getMock();
         $dispatcher = new DispatcherMiddleware($container);
-        $response = call_user_func_array($dispatcher, [$request, function () {
-        }]);
+        $response = $dispatcher->process($request, $this->getMockBuilder(DelegateInterface::class)->getMock());
         $this->assertEquals('Hello', (string)$response->getBody());
     }
 
@@ -36,6 +35,6 @@ class DispatcherMiddlewareTest extends TestCase
 
         $request = (new ServerRequest('GET', '/demo'));
         $dispatcher = new DispatcherMiddleware($container);
-        $this->assertEquals($response, call_user_func_array($dispatcher, [$request, [$delegate, 'process']]));
+        $this->assertEquals($response, $dispatcher->process($request, $delegate));
     }
 }

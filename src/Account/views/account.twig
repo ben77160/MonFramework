@@ -1,0 +1,25 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+  <h1>Mon compte</h1>
+
+  {% if flash('success') %}
+    <div class="alert alert-success">
+      {{ flash('success') }}
+    </div>
+  {% endif %}
+
+  <form action="" method="post">
+    {{ csrf_input() }}
+    {{ field('firstname', user.firstname, 'Prénom') }}
+    {{ field('lastname', user.lastname, 'Nom') }}
+    <h2>Changer de mot de passe</h2>
+    <p>Laissez vide pour ne rien changer</p>
+    {{ field('password', null, 'Mot de passe', {type: 'password'}) }}
+    {{ field('password_confirm', null, 'Confirmer le mot de passe', {type: 'password'}) }}
+    <button class="btn btn-primary">Modifier mes informations</button>
+  </form>
+
+
+{% endblock %}

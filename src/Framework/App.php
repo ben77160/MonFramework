@@ -5,6 +5,7 @@ namespace Framework;
 use DI\ContainerBuilder;
 use Doctrine\Common\Cache\ApcuCache;
 use Doctrine\Common\Cache\FilesystemCache;
+use Framework\Middleware\CombinedMiddleware;
 use Framework\Middleware\RoutePrefixedMiddleware;
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
@@ -76,14 +77,12 @@ class App implements DelegateInterface
 
     public function process(ServerRequestInterface $request): ResponseInterface
     {
-        $middleware = $this->getMiddleware();
-        if (is_null($middleware)) {
-            throw new \Exception('Aucun middleware n\'a intercepté cette requête');
-        } elseif (is_callable($middleware)) {
-            return call_user_func_array($middleware, [$request, [$this, 'process']]);
-        } elseif ($middleware instanceof MiddlewareInterface) {
-            return $middleware->process($request, $this);
+        $this->index++;
+        if ($this->index > 1) {
+            throw new \Exception();
         }
+        $middleware = new CombinedMiddleware($this->getContainer(), $this->middlewares);
+        return $middleware->process($request, $this);
     }
 
     public function run(ServerRequestInterface $request): ResponseInterface
@@ -117,23 +116,6 @@ class App implements DelegateInterface
             $this->container = $builder->build();
         }
         return $this->container;
-    }
-
-    /**
-     * @return object
-     */
-    private function getMiddleware()
-    {
-        if (array_key_exists($this->index, $this->middlewares)) {
-            if (is_string($this->middlewares[$this->index])) {
-                $middleware = $this->container->get($this->middlewares[$this->index]);
-            } else {
-                $middleware = $this->middlewares[$this->index];
-            }
-            $this->index++;
-            return $middleware;
-        }
-        return null;
     }
 
     /**

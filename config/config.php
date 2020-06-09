@@ -8,12 +8,9 @@ use Framework\Router\RouterFactory;
 use Framework\Router\RouterTwigExtension;
 use Framework\Session\PHPSession;
 use Framework\Session\SessionInterface;
-use Framework\Twig\CsrfExtension;
-use Framework\Twig\FlashExtension;
-use Framework\Twig\FormExtension;
-use Framework\Twig\PagerFantaExtension;
-use Framework\Twig\TextExtension;
-use Framework\Twig\TimeExtension;
+use Framework\Twig\{
+    CsrfExtension, FlashExtension, FormExtension, PagerFantaExtension, TextExtension, TimeExtension
+};
 
 return [
     'env' => \DI\env('ENV', 'production'),

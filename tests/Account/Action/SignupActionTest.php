@@ -124,6 +124,6 @@ class SignupActionTest extends ActionTestCase
             'password' => '0000',
             'password_confirm' => '0000'
         ]));
-        $this->assertRedirect($response, 'account.profile');
+        $this->assertRedirect($response, 'account');
     }
 }
