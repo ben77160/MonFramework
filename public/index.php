@@ -8,6 +8,7 @@ use Framework\Auth\RoleMiddlewareFactory;
 use Framework\Middleware\CsrfMiddleware;
 use Framework\Middleware\DispatcherMiddleware;
 use Framework\Middleware\MethodMiddleware;
+use Framework\Middleware\RendererRequestMiddleware;
 use Framework\Middleware\RouterMiddleware;
 use Framework\Middleware\TrailingSlashMiddleware;
 use Framework\Middleware\NotFoundMiddleware;
@@ -34,6 +35,7 @@ $app->pipe(Whoops::class)
         $container->get(RoleMiddlewareFactory::class)->makeForRole('admin')
     )
     ->pipe(MethodMiddleware::class)
+    ->pipe(RendererRequestMiddleware::class)
     ->pipe(CsrfMiddleware::class)
     ->pipe(RouterMiddleware::class)
     ->pipe(DispatcherMiddleware::class)
