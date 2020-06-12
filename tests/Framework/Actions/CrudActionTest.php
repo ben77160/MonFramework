@@ -23,6 +23,7 @@ class CrudActionTest extends TestCase
     {
         $this->table = $this->getMockBuilder(Table::class)->disableOriginalConstructor()->getMock();
         $this->query = $this->getMockBuilder(Query::class)->getMock();
+        $this->table->method('getEntity')->willReturn(\stdClass::class);
         $this->table->method('findAll')->willReturn($this->query);
         $this->table->method('find')->willReturnCallback(function ($id) {
             $object = new \stdClass();

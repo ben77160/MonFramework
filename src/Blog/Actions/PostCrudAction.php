@@ -67,7 +67,7 @@ class PostCrudAction extends CrudAction
      * @param Post $post
      * @return array
      */
-    protected function getParams(ServerRequestInterface $request, $post): array
+    protected function prePersist(ServerRequestInterface $request, $post): array
     {
         $params = array_merge($request->getParsedBody(), $request->getUploadedFiles());
         // Uploader le fichier

@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class CallableMiddlware implements MiddlewareInterface
+class CallableMiddlware implements MiddlewareInterface, \Psr\Http\Server\MiddlewareInterface
 {
 
     private $callable;

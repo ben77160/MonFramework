@@ -9,7 +9,7 @@ class FormExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('field', [$this, 'field'], [
-                'is_safe'       => ['html'],
+                'is_safe' => ['html'],
                 'needs_context' => true
             ])
         ];
@@ -22,19 +22,26 @@ class FormExtension extends \Twig_Extension
      * @param mixed $value Valeur du champs
      * @param string|null $label Label à utiliser
      * @param array $options
+     * @param array $attributes
      * @return string
      */
-    public function field(array $context, string $key, $value, ?string $label = null, array $options = []): string
-    {
+    public function field(
+        array $context,
+        string $key,
+        $value,
+        ?string $label = null,
+        array $options = [],
+        array $attributes = []
+    ): string {
         $type = $options['type'] ?? 'text';
         $error = $this->getErrorHtml($context, $key);
         $class = 'form-group';
         $value = $this->convertValue($value);
-        $attributes = [
+        $attributes = array_merge([
             'class' => trim('form-control ' . ($options['class'] ?? '')),
             'name'  => $key,
             'id'    => $key
-        ];
+        ], $attributes);
 
         if ($error) {
             $class .= ' has-danger';
@@ -150,7 +157,7 @@ class FormExtension extends \Twig_Extension
         $htmlParts = [];
         foreach ($attributes as $key => $value) {
             if ($value === true) {
-                $htmlParts[] = (string) $key;
+                $htmlParts[] = (string)$key;
             } elseif ($value !== false) {
                 $htmlParts[] = "$key=\"$value\"";
             }
