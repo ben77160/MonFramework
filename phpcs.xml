@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <ruleset name="MonFramework">
-    <description>Mes règles de formattage</description>
+    <description>Mes règles de formattage.</description>
 
     <arg name="colors"/>
     <arg value="p"/>

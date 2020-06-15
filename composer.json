@@ -23,7 +23,10 @@
         "middlewares/whoops": "^0.4.1",
         "doctrine/cache": "~1.4",
         "intervention/image": "^2.4",
-        "swiftmailer/swiftmailer": "^6.0"
+        "swiftmailer/swiftmailer": "^6.0",
+        "ramsey/uuid": "^3.7",
+        "stripe/stripe-php": "^5.2",
+        "staaky/vatrates": "^2.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.0",
