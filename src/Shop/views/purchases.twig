@@ -1,0 +1,29 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+  <h1>Mes achats</h1>
+
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Nom du produit</th>
+      <th>Date d'achats</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for purchase in purchases %}
+      <tr>
+        <td>{{ purchase.productName }}</td>
+        <td>{{ purchase.createdAt.format('d/m/Y H:i') }}</td>
+        <td>
+          <a target="_blank" href="{{ path('shop.download', {id: purchase.productId}) }}" class="btn btn-primary">Télécharger</a>
+          <a target="_blank" href="{{ path('shop.invoice', {id: purchase.id}) }}" class="btn btn-default">Facture</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

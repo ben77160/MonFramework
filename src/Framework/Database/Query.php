@@ -154,6 +154,16 @@ class Query implements \IteratorAggregate
     }
 
     /**
+     * Récupère un résultat
+     * @param int $columnNumber
+     * @return mixed
+     */
+    public function fetchColumn(int $columnNumber = 0)
+    {
+        return $this->execute()->fetchColumn($columnNumber);
+    }
+
+    /**
      * Retournera un résultat ou renvoie une exception
      * @return bool|mixed
      * @throws NoRecordException

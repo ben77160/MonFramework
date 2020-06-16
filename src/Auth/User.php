@@ -100,7 +100,7 @@ class User implements \Framework\Auth\User
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }

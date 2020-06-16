@@ -77,6 +77,15 @@ class Purchase
     }
 
     /**
+     * Renvoie la TVA de l'achat
+     * @return float|null
+     */
+    public function getVatPrice(): ?float
+    {
+        return $this->price * $this->vat / 100;
+    }
+
+    /**
      * @param mixed $price
      */
     public function setPrice(float $price)

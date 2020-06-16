@@ -28,6 +28,9 @@
   <div class="navbar-nav">
     {% if current_user() %}
       <div class="navbar-text">Connecté en tant que {{ current_user().username }}</div>
+      <div class="nav-item">
+        <a href="{{ path('shop.purchases') }}" class="nav-link">Mes achats</a>
+      </div>
       &nbsp; &nbsp;
       <form method="post" action="{{ path('auth.logout') }}">
         {{ csrf_input() }}
