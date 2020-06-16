@@ -58,8 +58,8 @@ class PurchaseProduct
 
         // Créer ou récupérer le customer de l'utilisateur
         $customer = $this->findCustomerForUser($user, $token);
-
-        if (!$this->hasCard($customer, $card)) {
+        $card = $this->getMatchingCard($customer, $card);
+        if ($card === null) {
             $card = $this->stripe->createCardForCustomer($customer, $token);
         }
 
@@ -67,6 +67,7 @@ class PurchaseProduct
             "amount" => $price * 100,
             "currency" => "eur",
             "source" => $card->id,
+            "customer" => $customer->id,
             "description" => "Achat sur monsite.com {$product->getName()}"
         ]);
 
@@ -75,6 +76,7 @@ class PurchaseProduct
             'product_id' => $product->getId(),
             'price' => $product->getPrice(),
             'vat'   => $vatRate,
+            'country' => $card->country,
             'created_at' => date('Y-m-d H:i:s'),
             'stripe_id' => $charge->id
         ]);
@@ -83,14 +85,16 @@ class PurchaseProduct
     /**
      * @param Customer $customer
      * @param Card $card
-     * @return bool
+     * @return null|Card
      */
-    private function hasCard(Customer $customer, Card $card): bool
+    private function getMatchingCard(Customer $customer, Card $card): ?Card
     {
-        $fingerprints = array_map(function ($source) {
-            return $source->fingerprint;
-        }, $customer->sources->all());
-        return in_array($card->fingerprint, $fingerprints);
+        foreach ($customer->sources->data as $datum) {
+            if ($datum->fingerprint === $card->fingerprint) {
+                return $datum;
+            }
+        }
+        return null;
     }
 
     /**

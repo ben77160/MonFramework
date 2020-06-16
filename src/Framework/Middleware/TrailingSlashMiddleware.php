@@ -9,7 +9,7 @@ class TrailingSlashMiddleware
     public function __invoke(ServerRequestInterface $request, callable $next)
     {
         $uri = $request->getUri()->getPath();
-        if (!empty($uri) && $uri[-1] === "/") {
+        if (!empty($uri) && $uri !== '/' && $uri[-1] === "/") {
             return (new \GuzzleHttp\Psr7\Response())
                 ->withStatus(301)
                 ->withHeader('Location', substr($uri, 0, -1));

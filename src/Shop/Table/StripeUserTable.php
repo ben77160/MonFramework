@@ -16,7 +16,7 @@ class StripeUserTable extends Table
             ->where('user_id = :user')
             ->params(['user' => $user->getId()])
             ->fetch();
-        if ($record === null) {
+        if ($record === false) {
             return null;
         }
         return $record->customerId;

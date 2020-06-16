@@ -6,8 +6,7 @@
 
 {% block body %}
 
-  <h1>Bienvenue sur la boutique{% if page > 1 %}, page {{ page }}{% endif %}</h1>
-
+  <h1>Boutique{% if page > 1 %}, page {{ page }}{% endif %}</h1>
 
   <div class="row">
 
@@ -27,11 +26,10 @@
               <p class="card-text">
                 {{ product.description | excerpt | nl2br }}
               </p>
-              <p class="text-muted">{{ product.createdAt | ago }}</p>
             </div>
             <div class="card-footer">
               <a href="{{ path('shop.show', {slug: product.slug}) }}" class="btn btn-primary">
-                Voir l'article
+                Voir le produit
               </a>
             </div>
           </div>
@@ -39,5 +37,7 @@
       </div>
     {% endfor %}
   </div>
+
+  {{ paginate(products, 'shop') }}
 
 {% endblock %}

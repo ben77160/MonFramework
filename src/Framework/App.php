@@ -21,10 +21,11 @@ class App implements DelegateInterface
      * @var array
      */
     private $modules = [];
+
     /**
-     * @var string|array|null
+     * @var array
      */
-    private $definition;
+    private $definitions;
 
     /**
      * @var ContainerInterface
@@ -41,9 +42,19 @@ class App implements DelegateInterface
      */
     private $index = 0;
 
-    public function __construct($definition = null)
+    /**
+     * App constructor.
+     * @param null|string|array $definitions
+     */
+    public function __construct($definitions = [])
     {
-        $this->definition = $definition;
+        if (is_string($definitions)) {
+            $definitions = [$definitions];
+        }
+        if (!$this->isSequential($definitions)) {
+            $definitions = [$definitions];
+        }
+        $this->definitions = $definitions;
     }
 
     /**
@@ -105,8 +116,8 @@ class App implements DelegateInterface
                 $builder->setDefinitionCache(new FilesystemCache('tmp/di'));
                 $builder->writeProxiesToFile(true, 'tmp/proxies');
             }
-            if ($this->definition) {
-                $builder->addDefinitions($this->definition);
+            foreach ($this->definitions as $definition) {
+                $builder->addDefinitions($definition);
             }
             foreach ($this->modules as $module) {
                 if ($module::DEFINITIONS) {
@@ -124,5 +135,13 @@ class App implements DelegateInterface
     public function getModules(): array
     {
         return $this->modules;
+    }
+
+    private function isSequential(array $array): bool
+    {
+        if (empty($array)) {
+            return true;
+        }
+        return array_keys($array) === range(0, count($array) - 1);
     }
 }

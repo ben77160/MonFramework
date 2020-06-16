@@ -20,13 +20,13 @@ return [
     'database.name' => 'monsupersite',
     'views.path' => dirname(__DIR__) . '/views',
     'twig.extensions' => [
-        \DI\get(RouterTwigExtension::class),
-        \DI\get(PagerFantaExtension::class),
-        \DI\get(TextExtension::class),
-        \DI\get(TimeExtension::class),
-        \DI\get(FlashExtension::class),
-        \DI\get(FormExtension::class),
-        \DI\get(CsrfExtension::class)
+      \DI\get(RouterTwigExtension::class),
+      \DI\get(PagerFantaExtension::class),
+      \DI\get(TextExtension::class),
+      \DI\get(TimeExtension::class),
+      \DI\get(FlashExtension::class),
+      \DI\get(FormExtension::class),
+      \DI\get(CsrfExtension::class)
     ],
     SessionInterface::class => \DI\object(PHPSession::class),
     CsrfMiddleware::class => \DI\object()->constructor(\DI\get(SessionInterface::class)),

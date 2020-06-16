@@ -21,7 +21,7 @@ chdir(dirname(__DIR__));
 
 require 'vendor/autoload.php';
 
-$app = (new \Framework\App('config/config.php'))
+$app = (new \Framework\App(['config/config.php', 'config.php']))
     ->addModule(AdminModule::class)
     ->addModule(ContactModule::class)
     ->addModule(ShopModule::class)
@@ -30,6 +30,7 @@ $app = (new \Framework\App('config/config.php'))
     ->addModule(AccountModule::class);
 
 $container = $app->getContainer();
+$container->get(\Framework\Router::class)->get('/', \App\Blog\Actions\PostIndexAction::class, 'home');
 $app->pipe(Whoops::class)
     ->pipe(TrailingSlashMiddleware::class)
     ->pipe(\App\Auth\ForbiddenMiddleware::class)
@@ -39,7 +40,7 @@ $app->pipe(Whoops::class)
     )
     ->pipe(MethodMiddleware::class)
     ->pipe(RendererRequestMiddleware::class)
-    ->pipe(CsrfMiddleware::class)
+    // ->pipe(CsrfMiddleware::class)
     ->pipe(RouterMiddleware::class)
     ->pipe(DispatcherMiddleware::class)
     ->pipe(NotFoundMiddleware::class);

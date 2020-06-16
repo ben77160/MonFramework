@@ -60,7 +60,7 @@ class PurchaseProductTest extends TestCase
         $customerId = 'cuz_12312312';
         $token = 'FR';
         $product = $this->makeProduct();
-        $card = $this->makeCard();
+        $card = $this->makeCard('FR');
         $user = $this->makeUser();
         $customer = $this->makeCustomer();
         $charge = $this->makeCharge();
@@ -81,6 +81,7 @@ class PurchaseProductTest extends TestCase
             'product_id' => $product->getId(),
             'price' => 50.00,
             'vat' => 20,
+            'country' => 'FR',
             'created_at' => date('Y-m-d H:i:s'),
             'stripe_id' => $charge->id
         ])->shouldBeCalled();
@@ -114,6 +115,7 @@ class PurchaseProductTest extends TestCase
             'product_id' => $product->getId(),
             'price' => 50.00,
             'vat' => 0,
+            'country' => 'US',
             'created_at' => date('Y-m-d H:i:s'),
             'stripe_id' => $charge->id
         ])->shouldBeCalled();
@@ -121,13 +123,12 @@ class PurchaseProductTest extends TestCase
         $this->purchase->process($product, $user, $token);
     }
 
-    public function testPurchaseWithExisitingCard()
+    public function testPurchaseWithExistingCard()
     {
         $customerId = 'cuz_12312312';
         $token = 'US';
         $product = $this->makeProduct();
         $card = $this->makeCard();
-        $cardToken = $this->stripe->reveal()->getCardFromToken($token);
         $user = $this->makeUser();
         $customer = $this->makeCustomer([$card]);
         $charge = $this->makeCharge();
@@ -138,7 +139,7 @@ class PurchaseProductTest extends TestCase
         $this->stripe->createCardForCustomer($customer, $token)->shouldNotBeCalled();
         $this->stripe->createCharge(new Argument\Token\LogicalAndToken([
             Argument::withEntry('amount', 5000),
-            Argument::withEntry('source', $cardToken->id)
+            Argument::withEntry('source', $card->id)
         ]))->shouldBeCalled()
             ->willReturn($charge);
         $this->purchaseTable->insert([
@@ -146,6 +147,7 @@ class PurchaseProductTest extends TestCase
             'product_id' => $product->getId(),
             'price' => 50.00,
             'vat' => 0,
+            'country' => 'US',
             'created_at' => date('Y-m-d H:i:s'),
             'stripe_id' => $charge->id
         ])->shouldBeCalled();
@@ -153,7 +155,7 @@ class PurchaseProductTest extends TestCase
         $this->purchase->process($product, $user, $token);
     }
 
-    public function testWithNonExitingCustomer()
+    public function testWithNonExistingCustomer()
     {
         $customerId = 'cuz_12312312';
         $token = 'US';
@@ -177,7 +179,8 @@ class PurchaseProductTest extends TestCase
         $this->stripe->createCardForCustomer($customer, $token)->shouldNotBeCalled();
         $this->stripe->createCharge(new Argument\Token\LogicalAndToken([
             Argument::withEntry('amount', 5000),
-            Argument::withEntry('source', $card->id)
+            Argument::withEntry('source', $card->id),
+            Argument::withEntry('customer', $customer->id)
         ]))->shouldBeCalled()
             ->willReturn($charge);
         $this->purchaseTable->insert([
@@ -185,6 +188,7 @@ class PurchaseProductTest extends TestCase
             'product_id' => $product->getId(),
             'price' => 50.00,
             'vat' => 0,
+            'country' => 'US',
             'created_at' => date('Y-m-d H:i:s'),
             'stripe_id' => $charge->id
         ])->shouldBeCalled();
@@ -210,9 +214,9 @@ class PurchaseProductTest extends TestCase
     {
         $customer = new Customer();
         $customer->id = "cus_1233";
-        $collection = $this->prophesize(Collection::class);
-        $collection->all()->willReturn($sources);
-        $customer->sources = $collection->reveal();
+        $collection = new Collection();
+        $collection->data = $sources;
+        $customer->sources = $collection;
         return $customer;
     }
 
@@ -224,11 +228,12 @@ class PurchaseProductTest extends TestCase
         return $product;
     }
 
-    private function makeCard(): Card
+    private function makeCard(string $country = "US"): Card
     {
         $card = new Card();
         $card->id = "card_13123";
         $card->fingerprint = "a";
+        $card->country = $country;
         return $card;
     }
 

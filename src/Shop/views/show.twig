@@ -1,0 +1,46 @@
+{% extends 'layout.twig' %}
+
+{% block title product.name %}
+
+{% block body %}
+
+  <div class="card">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="{{ product.thumb }}" alt="" style="width: 100%;">
+      </div>
+      <div class="col-sm-8">
+        <div class="card-body">
+          <div class="card-title"><h1>{{ product.name }}, {{ product.price | number_format(2, ',', ' ') }} €</h1></div>
+          <p class="card-text">
+            {{ product.description | nl2br }}
+          </p>
+          {% if current_user() %}
+            {% if download %}
+              <a class="btn btn-primary" href="{{ path('shop.download', {id: product.id}) }}">Télécharger</a>
+            {% else %}
+              <form action="{{ path('shop.purchase', {id: product.id}) }}" method="POST">
+                {{ csrf_input() }}
+                <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="{{ stripeKey }}"
+                        data-amount="{{ product.price * 100 }}"
+                        data-name="{{ product.name }}"
+                        data-email="{{ current_user().email }}"
+                        data-description="Achat sur monsite.com {{ product.name }}"
+                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                        data-locale="fr"
+                        data-zip-code="true"
+                        data-currency="eur">
+                </script>
+              </form>
+            {% endif %}
+          {% else %}
+            <a class="btn btn-primary" href="{{ path('auth.login') }}">Acheter le produit</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

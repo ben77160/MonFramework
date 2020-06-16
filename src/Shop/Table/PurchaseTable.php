@@ -19,6 +19,6 @@ class PurchaseTable extends Table
         return $this->makeQuery()
             ->where('product_id = :product AND user_id = :user')
             ->params(['user' => $user->getId(), 'product' => $product->getId()])
-            ->fetch();
+            ->fetch() ?: null;
     }
 }

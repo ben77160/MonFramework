@@ -1,0 +1,54 @@
+{% extends 'layout.twig' %}
+
+{% block title product.name %}
+
+{% block body %}
+
+  <div class="card">
+    <div class="row">
+      <div class="col-sm-4">
+        <img src="{{ product.thumb }}" alt="" style="width: 100%;">
+      </div>
+      <div class="col-sm-8">
+        <div class="card-body">
+          <div class="card-title"><h1>Récapitulatif</h1></div>
+          <div class="card-text">
+            <h2>Information de paiements</h2>
+            <p>
+              {{ card.brand }} - **** **** **** {{ card.last4 }}
+            </p>
+            <h2>Information de commande</h2>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>Nom du produit</th>
+                <th>Prix HT</th>
+                <th>TVA</th>
+                <th>Prix TTC</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price | number_format(2, ',', ' ') }} €</td>
+                <td>{{ vat | number_format(2, ',', ' ') }} %</td>
+                <td>{{ price | number_format(2, ',', ' ') }} €</td>
+              </tr>
+              </tbody>
+            </table>
+            <form action="{{ path('shop.process', {id: product.id}) }}" method="post">
+              {{ csrf_input() }}
+              <input type="hidden" name="stripeToken" value="{{ stripeToken }}">
+              <button class="btn btn-primary">Payer</button>
+            </form>
+          </div>
+          {% if current_user() %}
+          {% else %}
+            <a class="btn btn-primary" href="{{ path('auth.login') }}">Acheter le produit</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
