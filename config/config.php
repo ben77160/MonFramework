@@ -1,5 +1,6 @@
 <?php
 
+use App\Framework\Twig\ModuleExtension;
 use Framework\Middleware\CsrfMiddleware;
 use Framework\Renderer\RendererInterface;
 use Framework\Renderer\TwigRendererFactory;
@@ -26,7 +27,8 @@ return [
       \DI\get(TimeExtension::class),
       \DI\get(FlashExtension::class),
       \DI\get(FormExtension::class),
-      \DI\get(CsrfExtension::class)
+      \DI\get(CsrfExtension::class),
+      \DI\get(ModuleExtension::class)
     ],
     SessionInterface::class => \DI\object(PHPSession::class),
     CsrfMiddleware::class => \DI\object()->constructor(\DI\get(SessionInterface::class)),

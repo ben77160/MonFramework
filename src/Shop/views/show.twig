@@ -15,28 +15,35 @@
           <p class="card-text">
             {{ product.description | nl2br }}
           </p>
-          {% if current_user() %}
-            {% if download %}
-              <a class="btn btn-primary" href="{{ path('shop.download', {id: product.id}) }}">Télécharger</a>
-            {% else %}
-              <form action="{{ path('shop.purchase', {id: product.id}) }}" method="POST">
-                {{ csrf_input() }}
-                <script
-                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="{{ stripeKey }}"
-                        data-amount="{{ product.price * 100 }}"
-                        data-name="{{ product.name }}"
-                        data-email="{{ current_user().email }}"
-                        data-description="Achat sur monsite.com {{ product.name }}"
-                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                        data-locale="fr"
-                        data-zip-code="true"
-                        data-currency="eur">
-                </script>
-              </form>
-            {% endif %}
+          {% if module_enabled('basket') %}
+            <form action="{{ path('basket.add', {id: product.id}) }}" method="post">
+              {{ csrf_input() }}
+              <button class="btn btn-primary" href=""><span class="oi oi-basket"></span> Ajouter au panier</button>
+            </form>
           {% else %}
-            <a class="btn btn-primary" href="{{ path('auth.login') }}">Acheter le produit</a>
+            {% if current_user() %}
+              {% if download %}
+                <a class="btn btn-primary" href="{{ path('shop.download', {id: product.id}) }}">Télécharger</a>
+              {% else %}
+                <form action="{{ path('shop.purchase', {id: product.id}) }}" method="POST">
+                  {{ csrf_input() }}
+                  <script
+                          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                          data-key="{{ stripeKey }}"
+                          data-amount="{{ product.price * 100 }}"
+                          data-name="{{ product.name }}"
+                          data-email="{{ current_user().email }}"
+                          data-description="Achat sur monsite.com {{ product.name }}"
+                          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                          data-locale="fr"
+                          data-zip-code="true"
+                          data-currency="eur">
+                  </script>
+                </form>
+              {% endif %}
+            {% else %}
+              <a class="btn btn-primary" href="{{ path('auth.login') }}">Acheter le produit</a>
+            {% endif %}
           {% endif %}
         </div>
       </div>

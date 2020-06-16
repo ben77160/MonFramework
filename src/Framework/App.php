@@ -124,6 +124,9 @@ class App implements DelegateInterface
                     $builder->addDefinitions($module::DEFINITIONS);
                 }
             }
+            $builder->addDefinitions([
+                App::class => $this
+            ]);
             $this->container = $builder->build();
         }
         return $this->container;
