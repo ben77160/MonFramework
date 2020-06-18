@@ -1,0 +1,38 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th class="text-center">Nom du produit</th>
+    <th class="text-center">Quantité</th>
+    <th class="text-right">Prix</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for row in basket.rows %}
+    <tr>
+      <td>{{ row.product.name }}</td>
+      <td width="200">
+        {% if noform %}
+          {{ row.quantity }}
+        {% else %}
+        <form action="{{ path('basket.change', {id: row.product.id}) }}" class="form-inline" method="post">
+          {{ csrf_input() }}
+          <input type="number" class="form-control" name="quantity" value="{{ row.quantity }}" style="width:5rem;">
+          <button class="btn btn-primary">Changer</button>
+        </form>
+        {% endif %}
+      </td>
+      <td class="text-right" width="100">{{ row.product.price | price_format }}</td>
+    </tr>
+  {% endfor %}
+  <tr>
+    <td colspan="2" class="text-right">Total HT</td>
+    <td class="text-right">{{ basket.price | price_format }}</td>
+  </tr>
+  {% if vat %}
+  <tr>
+    <td colspan="2" class="text-right">Total TTC ({{ vat | price_format('%') }}) </td>
+    <td class="text-right">{{ (basket.price * (vat + 100) / 100) | price_format }}</td>
+  </tr>
+  {% endif %}
+  </tbody>
+</table>

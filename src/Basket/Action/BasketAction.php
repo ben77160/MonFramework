@@ -26,15 +26,21 @@ class BasketAction
      * @var BasketTable
      */
     private $basketTable;
+    /**
+     * @var string
+     */
+    private $stripeKey;
 
     public function __construct(
         Basket $basket,
         RendererInterface $renderer,
-        BasketTable $basketTable
+        BasketTable $basketTable,
+        string $stripeKey
     ) {
         $this->basket = $basket;
         $this->renderer = $renderer;
         $this->basketTable = $basketTable;
+        $this->stripeKey = $stripeKey;
     }
 
     public function __invoke(ServerRequestInterface $request)
@@ -55,7 +61,8 @@ class BasketAction
     {
         $this->basketTable->hydrateBasket($this->basket);
         return $this->renderer->render('@basket/show', [
-            'basket' => $this->basket
+            'basket'    => $this->basket,
+            'stripeKey' => $this->stripeKey
         ]);
     }
 }

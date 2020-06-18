@@ -1,0 +1,31 @@
+{% extends 'layout.twig' %}
+
+{% block title product.name %}
+
+{% block body %}
+
+  <div class="card">
+    <div class="row">
+      <div class="col-sm-6">
+        {% include '@basket/basket.twig' with {vat: vat, noform: true} %}
+      </div>
+      <div class="col-sm-6">
+        <div class="card-body">
+          <div class="card-title"><h1>Récapitulatif</h1></div>
+          <div class="card-text">
+            <h2>Information de paiements</h2>
+            <p>
+              {{ card.brand }} - **** **** **** {{ card.last4 }}
+            </p>
+            <form action="{{ path('basket.order.process') }}" method="post">
+              {{ csrf_input() }}
+              <input type="hidden" name="stripeToken" value="{{ stripeToken }}">
+              <button class="btn btn-primary">Payer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

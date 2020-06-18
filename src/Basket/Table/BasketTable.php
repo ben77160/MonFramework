@@ -109,4 +109,9 @@ class BasketTable extends Table
             ->fetchAll()
             ->toArray();
     }
+
+    public function deleteRows(\App\Basket\Entity\Basket $basket)
+    {
+        return $this->pdo->exec('DELETE FROM baskets_products WHERE basket_id = ' . $basket->getId());
+    }
 }

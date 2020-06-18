@@ -4,6 +4,8 @@
   <title>{% block title "Mon site " %}</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
         integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css">
   <style>
     body {
       padding-top: 5rem;
@@ -26,12 +28,23 @@
     </li>
   </ul>
   <div class="navbar-nav">
-    {% if current_user() %}
-      <div class="navbar-text">Connecté en tant que {{ current_user().username }}</div>
+    {% if module_enabled('basket') %}
       <div class="nav-item">
-        <a href="{{ path('shop.purchases') }}" class="nav-link">Mes achats</a>
+        <a href="{{ path('basket') }}" class="nav-link"><span class="oi oi-basket"></span> Mon panier
+          ({{ basket_count() }})</a>
       </div>
-      &nbsp; &nbsp;
+    {% endif %}
+    {% if current_user() %}
+
+      {% if module_enabled('basket') %}
+        <div class="nav-item">
+          <a href="{{ path('basket.orders') }}" class="nav-link">Mes commandes</a>
+        </div>
+      {% else %}
+        <div class="nav-item">
+          <a href="{{ path('shop.purchases') }}" class="nav-link">Mes achats</a>
+        </div>
+      {% endif %}
       <form method="post" action="{{ path('auth.logout') }}">
         {{ csrf_input() }}
         <button class="btn btn-danger">Se déconnecter</button>
@@ -48,6 +61,18 @@
 </nav>
 
 <div class="container">
+
+  {% if flash('success') %}
+    <div class="alert alert-success">
+      {{ flash('success') }}
+    </div>
+  {% endif %}
+
+  {% if flash('error') %}
+    <div class="alert alert-danger">
+      {{ flash('error') }}
+    </div>
+  {% endif %}
 
   {% block body %}{% endblock %}
 

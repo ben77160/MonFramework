@@ -1,6 +1,7 @@
 <?php
 
 use App\Framework\Twig\ModuleExtension;
+use App\Framework\Twig\PriceExtension;
 use Framework\Middleware\CsrfMiddleware;
 use Framework\Renderer\RendererInterface;
 use Framework\Renderer\TwigRendererFactory;
@@ -28,7 +29,8 @@ return [
       \DI\get(FlashExtension::class),
       \DI\get(FormExtension::class),
       \DI\get(CsrfExtension::class),
-      \DI\get(ModuleExtension::class)
+      \DI\get(ModuleExtension::class),
+      \DI\get(PriceExtension::class)
     ],
     SessionInterface::class => \DI\object(PHPSession::class),
     CsrfMiddleware::class => \DI\object()->constructor(\DI\get(SessionInterface::class)),
