@@ -8,6 +8,11 @@ use App\Shop\Entity\Product;
 class BasketRow
 {
 
+    /**
+     * @var int|null
+     */
+    private $id;
+
     private $product;
 
     private $productId;
@@ -61,5 +66,21 @@ class BasketRow
     public function setQuantity(int $quantity)
     {
         $this->quantity = $quantity;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id)
+    {
+        $this->id = $id;
     }
 }

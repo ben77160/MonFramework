@@ -168,4 +168,17 @@ class QueryResult implements \ArrayAccess, \Iterator
     {
         throw new \Exception("Can't alter records");
     }
+
+    /**
+     * Renvoie un tableau avec les enregistrements hydratés
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $records = [];
+        foreach ($this->records as $k => $v) {
+            $records[] = $this->get($k);
+        }
+        return $records;
+    }
 }
